@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janet Wambui Kimiti — Mama Sukari | MCA 2027, Kahawa Sukari Ward</title>
+<meta name="description" content="Janet Wambui Kimiti, DCP candidate for MCA, Kahawa Sukari Ward. Her 5-point contract for the ward.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F7F3E8;--ink:#0B0B0D;--green:#0C3B1E;--accent:#0E5C2B;--red:#C1272D;--mint:#7CFF9B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.5}
+img{max-width:100%;display:block}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.spine{height:6px;background:linear-gradient(90deg,#0B0B0D 0%,var(--red) 50%,var(--accent) 100%)}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto}
+nav .brand{display:flex;align-items:center;gap:10px}
+nav .brand img{height:30px}
+nav .brand span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--green)}
+nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 16px;text-decoration:none;font-weight:600}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:#fff}
+.hero-inner{max-width:1040px;margin:0 auto;padding:40px 24px 60px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative}
+.hero-ghost{position:absolute;right:-8%;top:-10%;width:60%;opacity:.08;pointer-events:none;-webkit-mask-image:radial-gradient(60% 60% at 60% 40%,#000 60%,transparent 100%);mask-image:radial-gradient(60% 60% at 60% 40%,#000 60%,transparent 100%)}
+.hero-kick{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.2em;color:var(--accent);font-weight:600}
+.hero h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(38px,6vw,64px);line-height:1.02;color:var(--green);margin:12px 0 0}
+.hero-want{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:clamp(18px,2.4vw,24px);color:var(--green);margin:14px 0 0}
+.hero-actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;text-decoration:none;font-weight:600;cursor:pointer;border:none}
+.btn-primary{background:var(--red);color:#fff}
+.btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.hero-photo{position:relative;z-index:2}
+.hero-photo img{border-radius:6px;width:100%;height:420px;object-fit:cover;object-position:40% 20%;box-shadow:0 30px 60px rgba(0,0,0,.18)}
+
+/* DREAM */
+.dream{background:var(--paper);padding:70px 0}
+.dream .wrap{max-width:720px}
+.section-kick{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:600}
+.dream h2{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,3.4vw,36px);color:var(--green);margin:10px 0 18px}
+.dream p{font-size:16px;color:#333;max-width:62ch}
+
+/* CONTRACT */
+.contract{background:var(--green);color:#fff;padding:70px 0}
+.contract .section-kick{color:var(--mint)}
+.contract h2{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,3.4vw,36px);margin:10px 0 34px}
+.contract-list{list-style:none;display:grid;gap:0;max-width:720px}
+.contract-list li{display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.16);font-size:18px}
+.contract-list li:first-child{border-top:1px solid rgba(255,255,255,.16)}
+.tick{flex:none;width:28px;height:28px;border-radius:50%;background:var(--mint);color:var(--green);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:2px}
+
+/* ABOUT */
+.about{padding:70px 0}
+.about .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center;max-width:960px}
+.about-photo img{border-radius:6px;width:100%;height:340px;object-fit:cover;object-position:40% 25%}
+.about h2{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(24px,3vw,32px);color:var(--green);margin:10px 0 16px}
+.about blockquote{font-family:'Fraunces',serif;font-style:italic;font-size:19px;color:var(--green);border-left:3px solid var(--accent);padding-left:18px;margin:0 0 18px}
+.about p.note{font-size:13px;color:#999;font-family:'IBM Plex Mono',monospace;letter-spacing:.02em}
+
+/* SUPPORT */
+.support{background:#fff;padding:70px 0;text-align:center;border-top:1px solid #eee}
+.support h2{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,3.4vw,36px);color:var(--green)}
+.support p{color:#555;max-width:52ch;margin:14px auto 0}
+.till-box{display:inline-flex;flex-direction:column;gap:2px;background:var(--green);color:#fff;padding:20px 40px;margin-top:28px}
+.till-box span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;color:var(--mint)}
+.till-box b{font-family:'Fraunces',serif;font-size:28px;letter-spacing:.02em}
+
+/* FOOTER */
+footer{background:var(--ink);color:#999;padding:34px 0;text-align:center}
+footer .foot-brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#fff;margin-bottom:8px}
+footer p{font-size:11px;color:#666}
+
+@media (max-width:760px){
+  .hero-inner{grid-template-columns:1fr;gap:28px}
+  .hero-photo img{height:320px}
+  .hero-photo{order:-1}
+  .about .wrap{grid-template-columns:1fr}
+  .about-photo img{height:260px}
+}
+</style>
+</head>
+<body>
+<div class="spine"></div>
+<nav>
+  <div class="brand"><img src="images/DCP%20LOGO.png" alt="DCP" onerror="this.style.display='none'"><span>MAMA SUKARI</span></div>
+  <a class="cta" href="#support">Support</a>
+</nav>
+
+<section class="hero">
+  <img class="hero-ghost" src="images/gachagua.png" alt="" onerror="this.style.display='none'">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kick">KAHAWA SUKARI WARD • MCA 2027 • DCP</div>
+      <h1>Janet Wambui Kimiti</h1>
+      <p class="hero-want">I want to be your MCA.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contract">Read the Contract</a>
+        <a class="btn btn-ghost" href="#support">Support the Campaign</a>
+      </div>
+    </div>
+    <div class="hero-photo"><img src="images/janet%20headshgot.png" alt="Janet Wambui Kimiti"></div>
+  </div>
+</section>
+
+<section class="dream">
+  <div class="wrap">
+    <div class="section-kick">THE DREAM</div>
+    <h2>A ward that gets the basics right, then builds on them.</h2>
+    <p>Kahawa Sukari doesn't need more promises — it needs land rates that make sense, drainage that stops the flooding, and roads that survive one rainy season. Janet's plan starts there, then moves to the community projects residents have been asking for, tracked and reported back to the people who voted for them.</p>
+  </div>
+</section>
+
+<section class="contract" id="contract">
+  <div class="wrap">
+    <div class="section-kick">HER COMMITMENT</div>
+    <h2>My 5-Point Contract</h2>
+    <ul class="contract-list">
+      <li><span class="tick">✓</span>Fair Land Rates & Control Regulations</li>
+      <li><span class="tick">✓</span>Sewer Connection for Every Home</li>
+      <li><span class="tick">✓</span>Storm Drainage That Ends Flooding</li>
+      <li><span class="tick">✓</span>Paved Roads, Cabro & Bitumen</li>
+      <li><span class="tick">✓</span>Vetted Community Projects</li>
+    </ul>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <div class="about-photo"><img src="images/janet%20headshgot.png" alt="Janet Wambui Kimiti"></div>
+    <div>
+      <div class="section-kick">MAMA SUKARI</div>
+      <h2>Why Kahawa Sukari calls her that</h2>
+      <blockquote>"A mother's eye for our ward — every coin watched, every project delivered."</blockquote>
+      <p class="note">[Placeholder — add Janet's full bio here: background, community work, why she's running.]</p>
+    </div>
+  </div>
+</section>
+
+<section class="support" id="support">
+  <div class="wrap">
+    <div class="section-kick">GET INVOLVED</div>
+    <h2>Support Mama Sukari</h2>
+    <p>Every contribution goes toward reaching every home in the ward before the vote — printing, rallies, and the volunteers doing the door-to-door work.</p>
+    <div class="till-box"><span>TILL NUMBER</span><b>5973293</b></div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">LISTEN • ACT • DELIVER</div>
+  <p>Janet Wambui Kimiti for MCA, Kahawa Sukari Ward 0572 • Democratic Congress Party (DCP)<br>[Placeholder — add authorized-by / IEBC disclaimer line here per campaign finance rules]</p>
+</footer>
+</body>
+</html>
