@@ -18,23 +18,13 @@ body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-we
 html{-webkit-text-size-adjust:100%}
 body{overflow-x:hidden;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);-webkit-tap-highlight-color:transparent}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media (max-width:640px){
-  nav{padding:12px 16px;gap:10px}
-  nav .navlinks{gap:12px}
-  nav a.navlink{padding:8px 2px}
-  .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
-  .wrap,.wrap-narrow{padding-left:18px;padding-right:18px}
-  .event-card{padding:20px}
-  .event-details summary{padding:8px 0}
-  .detail-block ul{margin-left:20px}
-}
-@media (max-width:400px){ nav .brand span{display:none} }
+body.no-scroll{overflow:hidden}
+
 img{max-width:100%;display:block}
-.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
-.wrap-narrow{max-width:820px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
 .spine{height:6px;background:linear-gradient(90deg,#0B0B0D 0%,var(--red) 50%,var(--accent) 100%)}
 
-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto}
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1100px;margin:0 auto}
 nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 nav .brand img{height:30px}
 nav .brand span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--green)}
@@ -42,51 +32,102 @@ nav .navlinks{display:flex;align-items:center;gap:18px}
 nav a.navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);text-decoration:none;font-weight:600}
 nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 16px;text-decoration:none;font-weight:600}
 
-.pagehead{background:#fff;padding:46px 0 40px;border-bottom:1px solid var(--line)}
+.pagehead{background:#fff;padding:44px 0 36px;border-bottom:1px solid var(--line)}
 .section-kick{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:600}
 .pagehead h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(30px,4.4vw,44px);color:var(--green);margin:10px 0 12px}
-.pagehead p{font-size:16px;color:#333;max-width:60ch}
-.pagehead .actions{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}
+.pagehead p{font-size:16px;color:#333;max-width:62ch}
+.pagehead .actions{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
-.events{padding:44px 0 30px}
-.event-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:30px;margin-bottom:28px;box-shadow:0 12px 30px rgba(0,0,0,.05)}
-.event-media{width:100%;max-height:420px;object-fit:cover;border-radius:8px;border:1px solid var(--line);margin-bottom:24px}
+.list{padding:32px 0 60px}
+
+/* Toolbar — only shown when there is more than one programme */
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+.toolbar input[type=search]{flex:1;min-width:220px;padding:12px 14px;border:1px solid #D9D5C9;border-radius:8px;font-family:'Inter',sans-serif;font-size:15px;background:#fff}
+.toolbar .count{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+.group-h{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:6px 0 16px}
+.group + .group{margin-top:42px;padding-top:34px;border-top:1px solid var(--line)}
+
+/* Grid of compact programme cards — scales to any number */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.pcard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.05);transition:box-shadow .18s,transform .18s}
+.pcard:hover{box-shadow:0 16px 34px rgba(0,0,0,.09);transform:translateY(-2px)}
+.pcard .thumb{position:relative;background:var(--paper);aspect-ratio:16/10;overflow:hidden}
+.pcard .thumb img{width:100%;height:100%;object-fit:cover}
+.pcard .thumb .noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9A9482}
+.pcard .thumb .ribbon{position:absolute;left:12px;top:12px;background:rgba(12,59,30,.92);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:20px}
+.pcard .body{padding:18px;display:flex;flex-direction:column;flex:1}
+.pcard .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:7px}
+.pcard h3{font-family:'Fraunces',serif;font-size:20px;line-height:1.2;color:var(--green);margin-bottom:8px}
+.pcard .desc{font-size:14px;color:#4A4A4A;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pcard .meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#666;margin-top:12px}
+.pcard .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pcard .pills .pill{font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:var(--paper);border:1px solid #DDD9CB;color:var(--green);padding:4px 10px;border-radius:20px}
+.pcard .cta{margin-top:auto;padding-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;padding:13px 20px;text-decoration:none;font-weight:600;cursor:pointer;border:1.5px solid transparent;white-space:nowrap;display:inline-block;border-radius:7px}
+.btn-primary{background:var(--red);color:#fff}
+.btn-ghost{background:transparent;color:var(--green);border-color:var(--green)}
+.pcard .cta .btn{flex:1;text-align:center}
+
+/* Featured layout — used when there is exactly one programme */
+.event-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:32px;box-shadow:0 14px 34px rgba(0,0,0,.06)}
+.event-media{width:100%;max-height:440px;object-fit:cover;border-radius:8px;border:1px solid var(--line);margin-bottom:26px}
 .event-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:8px}
-.event-card h2{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(22px,3vw,30px);color:var(--green);margin:0 0 12px}
-.event-card .lede{font-size:15.5px;color:#444;max-width:62ch}
-.event-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#666;letter-spacing:.03em;margin-top:14px}
+.event-card h2{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(24px,3.2vw,34px);color:var(--green);margin:0 0 12px}
+.event-card .lede{font-size:16px;color:#444;max-width:64ch}
+.event-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#666;margin-top:14px}
 .event-courses{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.pill{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;background:var(--paper);border:1px solid #DDD9CB;color:var(--green);padding:5px 12px;border-radius:20px}
-
-.event-details{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}
+.event-courses .pill{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--paper);border:1px solid #DDD9CB;color:var(--green);padding:5px 12px;border-radius:20px}
+.event-details{margin-top:24px;border-top:1px solid var(--line);padding-top:16px}
 .event-details summary{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);cursor:pointer;font-weight:600;list-style:none}
 .event-details summary::-webkit-details-marker{display:none}
 .event-details summary::after{content:"＋";float:right;font-weight:700}
 .event-details[open] summary::after{content:"－"}
+.event-cta{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.event-cta .note{font-size:13px;color:var(--muted)}
+
+/* Detail sheet */
+.backdrop{position:fixed;inset:0;background:rgba(11,11,13,.55);z-index:60;opacity:0;transition:opacity .18s}
+.backdrop.on{opacity:1}
+.sheet{position:fixed;z-index:61;background:#fff;left:50%;bottom:0;transform:translate(-50%,106%);width:min(780px,100%);max-height:92vh;overflow-y:auto;border-radius:16px 16px 0 0;transition:transform .24s ease;box-shadow:0 -10px 50px rgba(0,0,0,.3)}
+.sheet.on{transform:translate(-50%,0)}
+.sheet-x{position:sticky;top:0;z-index:2;width:100%;background:#fff;border:none;border-bottom:1px solid var(--line);padding:16px;text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);cursor:pointer;font-weight:600}
+.sheet-inner{padding:0 26px 30px}
+.sheet-inner .event-media{margin-bottom:20px}
+.sheet-inner h2{font-family:'Fraunces',serif;font-size:clamp(22px,3vw,30px);color:var(--green);margin:0 0 10px}
+.sheet-inner .lede{font-size:15.5px;color:#444}
 .detail-block{margin-top:18px}
 .detail-block h4{font-family:'Fraunces',serif;font-size:16.5px;color:var(--green);margin-bottom:6px}
 .detail-block p{font-size:14.5px;color:#444;max-width:70ch}
 .detail-block ul{margin:6px 0 0 18px}
 .detail-block li{font-size:14.5px;color:#444;margin-bottom:5px}
 
-.event-cta{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;text-decoration:none;font-weight:600;cursor:pointer;border:none;white-space:nowrap;display:inline-block;border-radius:6px}
-.btn-primary{background:var(--red);color:#fff}
-.btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
-.event-cta .note{font-size:13px;color:var(--muted)}
-
 .state{padding:20px 0;color:#666;font-size:14px;font-family:'IBM Plex Mono',monospace}
-.more{padding:10px 0 70px;text-align:center}
-.more p{color:#777;font-size:14px;max-width:52ch;margin:0 auto}
+.more{margin-top:40px}
+.more p{color:#666;font-size:14px;max-width:56ch}
 
-footer{background:var(--ink);color:#999;padding:34px 0;text-align:center}
+footer{background:var(--ink);color:#999;padding:34px 0;text-align:center;margin-top:40px}
 footer .foot-brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#fff;margin-bottom:8px}
 footer p{font-size:11px;color:#9A9A9A}
 
-@media (max-width:640px){
-  nav .navlinks .navlink:last-child{display:none}
-  .event-cta .btn{width:100%;text-align:center}
+@media (min-width:760px){
+  .sheet{bottom:auto;top:50%;border-radius:14px;transform:translate(-50%,-44%);opacity:0}
+  .sheet.on{transform:translate(-50%,-50%);opacity:1}
+  .pcard .cta .btn{flex:0 1 auto}
 }
+@media (max-width:640px){
+  nav{padding:12px 16px;gap:10px}
+  nav .navlinks{gap:12px}
+  nav a.navlink{padding:8px 2px}
+  .wrap{padding-left:18px;padding-right:18px}
+  .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
+  .pgrid{grid-template-columns:1fr;gap:18px}
+  .event-card{padding:20px}
+  .event-cta .btn{width:100%}
+  .sheet-inner{padding:0 18px 26px}
+  .event-details summary{padding:8px 0}
+}
+@media (max-width:400px){ nav .brand span{display:none} }
 </style>
 </head>
 <body>
@@ -104,24 +145,46 @@ footer p{font-size:11px;color:#9A9A9A}
   <div class="wrap">
     <div class="section-kick">PROGRAMMES &amp; EVENTS</div>
     <h1>Skills today. Opportunities tomorrow.</h1>
-    <p>Fully sponsored short courses and community programmes for Kahawa Sukari Ward — open to youths, young mothers and residents. Pick a programme below to register.</p>
+    <p>Fully sponsored short courses and community programmes for Kahawa Sukari Ward — open to youths, young mothers and residents.</p>
     <div class="actions">
       <a class="btn btn-primary" href="register.html">Register for a programme</a>
+      <span class="count" id="head-count"></span>
     </div>
   </div>
 </section>
 
-<section class="events">
-  <div class="wrap-narrow" id="events-wrap">
-    <div class="state">Loading programmes…</div>
-  </div>
-</section>
-
-<section class="more">
+<main class="list">
   <div class="wrap">
-    <p>More community programmes and events will be added here as they are announced. Questions? Call or WhatsApp <strong>0708 276 788</strong>.</p>
+    <div class="toolbar" id="toolbar" hidden>
+      <input type="search" id="q" placeholder="Search programmes — course, title or keyword…" aria-label="Search programmes">
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="state" id="state">Loading programmes…</div>
+
+    <section id="featured" hidden></section>
+
+    <section class="group" id="group-upcoming" hidden>
+      <h2 class="group-h" id="head-upcoming">Open now</h2>
+      <div class="pgrid" id="grid-upcoming"></div>
+    </section>
+
+    <section class="group" id="group-past" hidden>
+      <h2 class="group-h">Previous programmes</h2>
+      <div class="pgrid" id="grid-past"></div>
+    </section>
+
+    <div class="more">
+      <p>More community programmes and events will be added here as they are announced. Questions? Call or WhatsApp <strong>0708 276 788</strong>.</p>
+    </div>
   </div>
-</section>
+</main>
+
+<div class="backdrop" id="backdrop" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <button class="sheet-x" id="sheet-close" type="button">Close ✕</button>
+  <div class="sheet-inner" id="sheet-inner"></div>
+</div>
 
 <footer>
   <div class="foot-brand">LISTEN • ACT • DELIVER</div>
@@ -134,6 +197,8 @@ footer p{font-size:11px;color:#9A9A9A}
 (function () {
   'use strict';
 
+  var EVENT_LIST = [];
+
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -145,7 +210,11 @@ footer p{font-size:11px;color:#9A9A9A}
     if (isNaN(dt)) return d;
     return dt.toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' });
   }
-  // "line" or "- bullet" per line
+  function isPast(d) {
+    if (!d) return false;
+    var dt = new Date(d + 'T00:00:00');
+    return !isNaN(dt) && dt < new Date(new Date().toDateString());
+  }
   function renderBody(text) {
     var lines = String(text || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
     if (!lines.length) return '';
@@ -153,9 +222,7 @@ footer p{font-size:11px;color:#9A9A9A}
     var prose = lines.filter(function (l) { return l.charAt(0) !== '-'; });
     var html = '';
     if (prose.length) html += '<p>' + prose.map(esc).join('<br>') + '</p>';
-    if (bullets.length) {
-      html += '<ul>' + bullets.map(function (b) { return '<li>' + esc(b.replace(/^-\s*/, '')) + '</li>'; }).join('') + '</ul>';
-    }
+    if (bullets.length) html += '<ul>' + bullets.map(function (b) { return '<li>' + esc(b.replace(/^-\s*/, '')) + '</li>'; }).join('') + '</ul>';
     return html;
   }
   function renderDetails(details) {
@@ -167,48 +234,194 @@ footer p{font-size:11px;color:#9A9A9A}
     }).join('');
     return '<details class="event-details"><summary>Programme details</summary>' + inner + '</details>';
   }
+  function detailBlocks(details) {
+    if (!details || !details.length) return '';
+    return details.map(function (d) {
+      var h = d.h || d.heading || '';
+      var b = d.b || d.body || '';
+      return '<div class="detail-block">' + (h ? '<h4>' + esc(h) + '</h4>' : '') + renderBody(b) + '</div>';
+    }).join('');
+  }
+  function pills(courses, max) {
+    var list = courses || [];
+    var shown = max ? list.slice(0, max) : list;
+    var extra = max && list.length > max ? '<span class="pill">+' + (list.length - max) + ' more</span>' : '';
+    return shown.map(function (c) { return '<span class="pill">' + esc(c) + '</span>'; }).join('') + extra;
+  }
+  function metaLine(ev) {
+    var bits = [];
+    if (ev.event_date) bits.push('📅 ' + fmtDate(ev.event_date));
+    if (ev.location) bits.push('📍 ' + ev.location);
+    return bits.join(' &nbsp;·&nbsp; ');
+  }
+  function registerHref(slug) {
+    return 'register.html?event=' + encodeURIComponent(slug);
+  }
 
+  /* ---------- cards ---------- */
+  function compactCard(ev) {
+    var thumb = ev.image_url
+      ? '<img src="' + esc(ev.image_url) + '" alt="' + esc(ev.title) + ' poster" loading="lazy">'
+      : '<div class="noimg">Programme</div>';
+    return '<article class="pcard">' +
+      '<div class="thumb">' + thumb +
+        (isPast(ev.event_date) ? '<span class="ribbon">Finished</span>' : '') +
+      '</div>' +
+      '<div class="body">' +
+        (ev.tag_line ? '<div class="tag">' + esc(ev.tag_line) + '</div>' : '') +
+        '<h3>' + esc(ev.title) + '</h3>' +
+        (ev.description ? '<p class="desc">' + esc(ev.description) + '</p>' : '') +
+        '<div class="meta">' + metaLine(ev) + '</div>' +
+        ((ev.courses || []).length ? '<div class="pills">' + pills(ev.courses, 3) + '</div>' : '') +
+        '<div class="cta">' +
+          '<button class="btn btn-ghost" type="button" data-open="' + esc(ev.slug) + '">Details</button>' +
+          '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register</a>' +
+        '</div>' +
+      '</div>' +
+    '</article>';
+  }
+
+  function featuredCard(ev) {
+    return '<article class="event-card">' +
+      (ev.image_url ? '<img class="event-media" src="' + esc(ev.image_url) + '" alt="' + esc(ev.title) + ' poster">' : '') +
+      (ev.tag_line ? '<div class="event-tag">' + esc(ev.tag_line) + '</div>' : '') +
+      '<h2>' + esc(ev.title) + '</h2>' +
+      (ev.description ? '<p class="lede">' + esc(ev.description) + '</p>' : '') +
+      '<div class="event-meta">' + metaLine(ev) + '</div>' +
+      ((ev.courses || []).length ? '<div class="event-courses">' + pills(ev.courses) + '</div>' : '') +
+      renderDetails(ev.details) +
+      '<div class="event-cta">' +
+        '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register now</a>' +
+        '<span class="note">Fully sponsored · no fees</span>' +
+      '</div>' +
+    '</article>';
+  }
+
+  /* ---------- detail sheet ---------- */
+  var backdrop = document.getElementById('backdrop');
+  var sheet = document.getElementById('sheet');
+  var sheetInner = document.getElementById('sheet-inner');
+  var lastFocus = null;
+
+  function openSheet(slug) {
+    var ev = EVENT_LIST.filter(function (e) { return e.slug === slug; })[0];
+    if (!ev) return;
+    lastFocus = document.activeElement;
+    sheetInner.innerHTML =
+      (ev.image_url ? '<img class="event-media" src="' + esc(ev.image_url) + '" alt="' + esc(ev.title) + ' poster">' : '') +
+      (ev.tag_line ? '<div class="event-tag">' + esc(ev.tag_line) + '</div>' : '') +
+      '<h2 id="sheet-title">' + esc(ev.title) + '</h2>' +
+      (ev.description ? '<p class="lede">' + esc(ev.description) + '</p>' : '') +
+      '<div class="event-meta">' + metaLine(ev) + '</div>' +
+      ((ev.courses || []).length ? '<div class="event-courses">' + pills(ev.courses) + '</div>' : '') +
+      detailBlocks(ev.details) +
+      '<div class="event-cta">' +
+        '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register for this programme</a>' +
+        '<span class="note">Call / WhatsApp 0708 276 788</span>' +
+      '</div>';
+    backdrop.hidden = false;
+    sheet.hidden = false;
+    requestAnimationFrame(function () {
+      backdrop.classList.add('on');
+      sheet.classList.add('on');
+    });
+    document.body.classList.add('no-scroll');
+    document.getElementById('sheet-close').focus();
+  }
+  function closeSheet() {
+    backdrop.classList.remove('on');
+    sheet.classList.remove('on');
+    document.body.classList.remove('no-scroll');
+    setTimeout(function () { backdrop.hidden = true; sheet.hidden = true; sheetInner.innerHTML = ''; }, 220);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  document.getElementById('sheet-close').addEventListener('click', closeSheet);
+  backdrop.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !sheet.hidden) closeSheet();
+  });
+
+  /* ---------- render ---------- */
+  function currentQuery() {
+    return (document.getElementById('q').value || '').trim().toLowerCase();
+  }
+  function matches(ev, q) {
+    if (!q) return true;
+    var hay = [ev.title, ev.tag_line, ev.description, (ev.courses || []).join(' ')]
+      .map(function (x) { return String(x || '').toLowerCase(); }).join(' ');
+    return hay.indexOf(q) !== -1;
+  }
+
+  function render() {
+    var q = currentQuery();
+    var rows = EVENT_LIST.filter(function (ev) { return matches(ev, q); });
+    var upcoming = rows.filter(function (ev) { return !isPast(ev.event_date); });
+    var past = rows.filter(function (ev) { return isPast(ev.event_date); });
+
+    var featured = document.getElementById('featured');
+    var gUp = document.getElementById('group-upcoming');
+    var gPast = document.getElementById('group-past');
+    var toolbar = document.getElementById('toolbar');
+
+    document.getElementById('count').textContent = rows.length + ' of ' + EVENT_LIST.length + ' programmes';
+    document.getElementById('head-count').textContent =
+      EVENT_LIST.length === 1 ? '1 programme open' : EVENT_LIST.length + ' programmes';
+
+    // one programme → rich full-width layout; many → compact grid
+    if (EVENT_LIST.length === 1 && rows.length === 1) {
+      featured.hidden = false;
+      featured.innerHTML = featuredCard(rows[0]);
+      gUp.hidden = true; gPast.hidden = true; toolbar.hidden = true;
+      return;
+    }
+
+    featured.hidden = true;
+    toolbar.hidden = false;
+
+    gUp.hidden = !upcoming.length;
+    document.getElementById('grid-upcoming').innerHTML = upcoming.map(compactCard).join('');
+    document.getElementById('head-upcoming').textContent =
+      upcoming.length === 1 ? 'Open now' : 'Open now — ' + upcoming.length + ' programmes';
+
+    gPast.hidden = !past.length;
+    document.getElementById('grid-past').innerHTML = past.map(compactCard).join('');
+
+    if (!rows.length) {
+      gUp.hidden = true; gPast.hidden = true;
+      var st = document.getElementById('state');
+      st.hidden = false;
+      st.textContent = 'No programmes match that search. Try a course name, or clear the search.';
+      return;
+    }
+    document.getElementById('state').hidden = true;
+
+    document.querySelectorAll('[data-open]').forEach(function (btn) {
+      btn.addEventListener('click', function () { openSheet(btn.dataset.open); });
+    });
+  }
+
+  /* ---------- load ---------- */
   (async function () {
-    var wrap = document.getElementById('events-wrap');
-
+    var state = document.getElementById('state');
     if (typeof window.supabase === 'undefined') {
-      wrap.innerHTML = '<div class="state">Couldn\u2019t reach the programme list. Call/WhatsApp 0708 276 788 to register directly.</div>';
+      state.textContent = 'Couldn\u2019t reach the programme list. Call/WhatsApp 0708 276 788 to register directly.';
       return;
     }
     var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     var out = await client.from('janet_events').select('*').eq('is_active', true).order('event_date', { ascending: true });
 
     if (out.error) {
-      wrap.innerHTML = '<div class="state">Couldn\u2019t load programmes right now. Call/WhatsApp 0708 276 788 to register directly.</div>';
+      state.textContent = 'Couldn\u2019t load programmes right now. Call/WhatsApp 0708 276 788 to register directly.';
       console.error(out.error);
       return;
     }
-    var data = out.data || [];
-    if (!data.length) {
-      wrap.innerHTML = '<div class="state">No programmes open right now — check back soon.</div>';
+    EVENT_LIST = out.data || [];
+    if (!EVENT_LIST.length) {
+      state.textContent = 'No programmes open right now — check back soon.';
       return;
     }
-
-    wrap.innerHTML = data.map(function (ev) {
-      var dateStr = ev.event_date ? fmtDate(ev.event_date) : '';
-      var courses = (ev.courses || []).map(function (c) { return '<span class="pill">' + esc(c) + '</span>'; }).join('');
-      return '<article class="event-card">' +
-        (ev.image_url ? '<img class="event-media" src="' + esc(ev.image_url) + '" alt="' + esc(ev.title || 'Programme') + ' poster">' : '') +
-        (ev.tag_line ? '<div class="event-tag">' + esc(ev.tag_line) + '</div>' : '') +
-        '<h2>' + esc(ev.title) + '</h2>' +
-        (ev.description ? '<p class="lede">' + esc(ev.description) + '</p>' : '') +
-        '<div class="event-meta">' +
-          (dateStr ? '📅 ' + esc(dateStr) : '') +
-          (ev.location ? ' &nbsp;·&nbsp; 📍 ' + esc(ev.location) : '') +
-        '</div>' +
-        (courses ? '<div class="event-courses">' + courses + '</div>' : '') +
-        renderDetails(ev.details) +
-        '<div class="event-cta">' +
-          '<a class="btn btn-primary" href="register.html?event=' + encodeURIComponent(ev.slug) + '">Register now</a>' +
-          '<span class="note">Fully sponsored · no fees</span>' +
-        '</div>' +
-      '</article>';
-    }).join('');
+    document.getElementById('q').addEventListener('input', render);
+    render();
   })();
 })();
 </script>

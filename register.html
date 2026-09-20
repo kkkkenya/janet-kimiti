@@ -55,6 +55,10 @@ nav a.navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacin
 .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;background:var(--paper);border:1px solid var(--line);color:var(--green);padding:6px 13px;border-radius:20px}
 .chip.hot{background:#FCEBEC;border-color:#F3C9CB;color:var(--red)}
 
+/* Programme chooser (only shown when several programmes are open) */
+.chooser{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:18px;box-shadow:0 12px 28px rgba(0,0,0,.05)}
+.chooser select{margin-top:2px}
+
 /* Poster + programme details */
 .poster-wrap{display:none;margin:26px auto 0;max-width:440px}
 .poster-wrap img{width:100%;border-radius:10px;border:1px solid var(--line);box-shadow:0 16px 36px rgba(0,0,0,.10)}
@@ -176,6 +180,10 @@ footer a{color:#8FB79B}
     <div class="loading" id="loading">Loading form…</div>
 
     <div id="form-area" style="display:none">
+      <div class="chooser" id="chooser" style="display:none">
+        <label class="lab" for="prog-pick">Which programme are you registering for?</label>
+        <select id="prog-pick"></select>
+      </div>
       <div class="banner" id="banner"></div>
       <p class="req-note">Fields marked <b>*</b> are required.</p>
 
@@ -355,6 +363,7 @@ footer a{color:#8FB79B}
   };
 
   var state = { event: null, client: null, sending: false };
+  var PROGRAMMES = [];
 
   function hasSupabase() {
     return typeof window.supabase !== 'undefined' && typeof SUPABASE_URL === 'string' && SUPABASE_URL.indexOf('http') === 0;
@@ -590,12 +599,23 @@ footer a{color:#8FB79B}
       if (hasSupabase()) {
         state.client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        var q = state.client.from('janet_events').select('*').eq('is_active', true);
-        q = slug ? q.eq('slug', slug) : q.order('event_date', { ascending: true }).limit(1);
-        var out = await q;
+        var out = await state.client.from('janet_events').select('*').eq('is_active', true).order('event_date', { ascending: true });
         if (out.error) throw out.error;
-        var ev = (out.data && out.data.length) ? out.data[0] : null;
-        renderEvent(ev || FALLBACK_EVENT);
+        PROGRAMMES = out.data || [];
+
+        // pick the requested programme, else the first open one
+        var chosen = null;
+        if (slug) {
+          chosen = PROGRAMMES.filter(function (p) { return p.slug === slug; })[0] || null;
+        }
+        if (!chosen) chosen = PROGRAMMES[0] || null;
+
+        if (chosen) {
+          buildChooser(slug, chosen);
+          renderEvent(chosen);
+        } else {
+          renderEvent(FALLBACK_EVENT);
+        }
       } else {
         renderEvent(FALLBACK_EVENT);
       }
@@ -604,6 +624,26 @@ footer a{color:#8FB79B}
       renderEvent(FALLBACK_EVENT);
       showBanner('bad', 'We could not load this programme from the server, so you are seeing our main intake. Your registration will still reach the team.');
     }
+  }
+
+  // When more than one programme is open and no specific one was requested,
+  // let the visitor choose — the form updates to match.
+  function buildChooser(slugParam, chosen) {
+    var wrap = document.getElementById('chooser');
+    var sel = document.getElementById('prog-pick');
+    if (slugParam || PROGRAMMES.length < 2) { wrap.style.display = 'none'; return; }
+
+    sel.innerHTML = PROGRAMMES.map(function (p) {
+      var when = p.event_date ? ' — from ' + fmtDate(p.event_date) : '';
+      return '<option value="' + esc(p.slug) + '"' + (p.slug === chosen.slug ? ' selected' : '') + '>' +
+        esc(p.title) + esc(when) + '</option>';
+    }).join('');
+
+    sel.addEventListener('change', function () {
+      var ev = PROGRAMMES.filter(function (p) { return p.slug === sel.value; })[0];
+      if (ev) renderEvent(ev);
+    });
+    wrap.style.display = 'block';
   }
 
   init();

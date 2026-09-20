@@ -134,13 +134,13 @@ footer p{font-size:11px;color:#9A9A9A}
 </section>
 
 <section class="bandcta">
-  <div class="wrap">
+  <div class="wrap" id="band-inner">
     <div>
-      <div class="bandcta-k">A NEW DAWN • OCTOBER INTAKE</div>
+      <div class="bandcta-k">PROGRAMMES • OCTOBER INTAKE</div>
       <h3>Free skills training — 100% sponsored</h3>
       <p>Coffee Barista · Hospitality · Baking &amp; Pastry · Nutrition. Open to all youths, young mothers and residents of Kahawa Sukari Ward. Classes start 5th October — nafasi ni chache.</p>
     </div>
-    <a class="btn btn-primary" href="register.html">Enrol now</a>
+    <a class="btn btn-primary" href="events.html">See all programmes</a>
   </div>
 </section>
 
@@ -191,5 +191,61 @@ footer p{font-size:11px;color:#9A9A9A}
   <div class="foot-brand">LISTEN • ACT • DELIVER</div>
   <p>Janet Wambui Kimiti for MCA, Kahawa Sukari Ward 0572 • Democratic Congress Party (DCP)<br>[Placeholder — add authorized-by / IEBC disclaimer line here per campaign finance rules]</p>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+/* Homepage programmes band — shows the next open programmes.
+   Falls back to the static copy above if Supabase is unreachable,
+   so the band is never empty. */
+(function () {
+  'use strict';
+  if (typeof window.supabase === 'undefined') return;
+  var inner = document.getElementById('band-inner');
+  if (!inner) return;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmt(d) {
+    var dt = new Date(d + 'T00:00:00');
+    return isNaN(dt) ? d : dt.toLocaleDateString('en-KE', { day: 'numeric', month: 'short' });
+  }
+
+  var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  client.from('janet_events').select('slug,title,tag_line,description,event_date,courses').eq('is_active', true)
+    .order('event_date', { ascending: true })
+    .then(function (out) {
+      if (out.error) { console.error(out.error); return; }
+      var rows = (out.data || []).filter(function (ev) {
+        if (!ev.event_date) return true;
+        var dt = new Date(ev.event_date + 'T00:00:00');
+        return isNaN(dt) || dt >= new Date(new Date().toDateString());
+      });
+      if (!rows.length) return;
+
+      var one = rows[0];
+      var kick = rows.length === 1 ? (one.tag_line || 'PROGRAMMES')
+                                   : rows.length + ' PROGRAMMES OPEN NOW';
+      var title = rows.length === 1 ? one.title : (one.title + ' — and ' + (rows.length - 1) + ' more');
+      var line = rows.length === 1
+        ? (one.description || 'Free skills training for Kahawa Sukari Ward.')
+        : rows.slice(0, 3).map(function (ev) { return esc(ev.title) + (ev.event_date ? ' (from ' + esc(fmt(ev.event_date)) + ')' : ''); }).join(' · ');
+      var primary = '<a class="btn btn-primary" href="events.html">See all programmes</a>';
+      var secondary = rows.length === 1
+        ? '<a class="btn btn-ghost" href="register.html?event=' + encodeURIComponent(one.slug) + '" style="background:transparent;color:#fff;border-color:#fff">Register for this programme</a>'
+        : '';
+
+      inner.innerHTML =
+        '<div>' +
+          '<div class="bandcta-k">' + esc(kick) + '</div>' +
+          '<h3>' + esc(title) + '</h3>' +
+          '<p>' + (rows.length === 1 ? esc(line) : line) + '</p>' +
+        '</div>' + primary + secondary;
+    });
+})();
+</script>
 </body>
 </html>

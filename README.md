@@ -10,8 +10,8 @@ No build step, no framework, no npm. Plain HTML + CSS + vanilla JS, with **Supab
 
 | File | What it is |
 |---|---|
-| `register.html` | **Main registration page** — built-in form (Google-Form style) that writes to Supabase. Works standalone, or per programme via `?event=slug` |
-| `events.html` | Programmes subpage — the programme list, poster and full details, linking into registration |
+| `events.html` | Programmes subpage — card grid with search and a detail sheet; past programmes are grouped below. With only one programme it switches to a rich full-width layout |
+| `register.html` | **Main registration page** — built-in form (Google-Form style) that writes to Supabase. Works standalone, per programme via `?event=slug`, and shows a programme chooser when several are open |
 | `index.html` | Home — hero, the 5-point contract, about, support (Till 5973293) |
 | `admin.html` | Admin: manage programmes (poster, details) **and** view/export registrations (login required) |
 | `supabase-config.js` | Public Supabase URL + publishable key |
@@ -62,6 +62,19 @@ git push
 Vercel deploys automatically. No build command needed — it is a static site; the output directory is the repository root.
 
 ---
+
+## Scaling to many programmes
+
+The site is built to handle a growing programme list without a redesign:
+
+| Where | With one programme | With many |
+|---|---|---|
+| `events.html` | One rich full-width card: large poster, description, expandable details | Responsive card grid (thumbnail, tag, title, date, courses) with a **search box**, a live count, and a **detail sheet** that opens the full poster and every detail block without leaving the page |
+| Past programmes | — | Automatically grouped under **Previous programmes**, marked *Finished* |
+| `index.html` band | Names the single programme with a direct *Register for this programme* button | Shows “N programmes open now”, lists the next three, and sends visitors to the full list |
+| `register.html` | Straight to the form for that programme | Adds a **“Which programme are you registering for?”** chooser at the top; switching it updates the form, poster and details |
+
+Adding a programme is always just `admin.html` → save. Nothing else needs changing.
 
 ## Editing content
 
