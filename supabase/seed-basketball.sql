@@ -5,6 +5,22 @@
 -- status = 'pending', so it is hidden from the public site until you publish it
 -- (admin.html → Events → "Set live"). Nothing below is a confirmed arrangement.
 
+-- ── Column guard ────────────────────────────────────────────────
+-- Makes this file safe to run on its own. If the table is missing entirely,
+-- the error below tells you exactly what to run first.
+do $$ begin
+  if to_regclass('public.janet_events') is null then
+    raise exception 'Run supabase/schema.sql first — the janet_events table does not exist yet.';
+  end if;
+end $$;
+
+alter table public.janet_events add column if not exists image_url text;
+alter table public.janet_events add column if not exists details jsonb not null default '[]'::jsonb;
+alter table public.janet_events add column if not exists status text not null default 'live';
+alter table public.janet_events add column if not exists registration_open boolean not null default true;
+alter table public.janet_events add column if not exists status_note text;
+alter table public.janet_events add column if not exists is_active boolean not null default true;
+
 insert into public.janet_events
   (slug, title, tag_line, description, event_date, location, courses, image_url, details, status, registration_open, status_note, is_active)
 values (

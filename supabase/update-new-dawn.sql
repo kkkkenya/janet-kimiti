@@ -7,6 +7,22 @@
 -- ⚠️ The wording below is drafted copy to be reviewed by the campaign team —
 -- adjust anything (dates, times, what's included) in admin.html or here.
 
+-- ── Column guard ────────────────────────────────────────────────
+-- Makes this file safe to run on its own. If the table is missing entirely,
+-- the error below tells you exactly what to run first.
+do $$ begin
+  if to_regclass('public.janet_events') is null then
+    raise exception 'Run supabase/schema.sql first — the janet_events table does not exist yet.';
+  end if;
+end $$;
+
+alter table public.janet_events add column if not exists image_url text;
+alter table public.janet_events add column if not exists details jsonb not null default '[]'::jsonb;
+alter table public.janet_events add column if not exists status text not null default 'live';
+alter table public.janet_events add column if not exists registration_open boolean not null default true;
+alter table public.janet_events add column if not exists status_note text;
+alter table public.janet_events add column if not exists is_active boolean not null default true;
+
 update public.janet_events
 set
   image_url = 'images/new-dawn-poster.png',

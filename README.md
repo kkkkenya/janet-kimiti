@@ -16,8 +16,10 @@ No build step, no framework, no npm. Plain HTML + CSS + vanilla JS, with **Supab
 | `admin.html` | `/admin` | Admin: manage programmes (poster, details) **and** view/export registrations (login required) |
 | `supabase-config.js` | — | Public Supabase URL + publishable key |
 | `supabase/schema.sql` | — | Database schema + Row Level Security (run once) |
+| `supabase/install-all.sql` | — | **One-shot install** — all of the SQL below in the right order |
 | `supabase/seed.sql` | — | Seeds the "A New Dawn" October intake programme |
-| `supabase/seed-basketball.sql` | — | Adds the basketball tournament as a **draft** (hidden until you activate it) |
+| `supabase/update-statuses.sql` | — | Statuses, registration state, message column and the `programme-images` bucket |
+| `supabase/seed-basketball.sql` | — | Generic basketball placeholder, **pending** until you publish it |
 | `supabase/update-new-dawn.sql` | — | Adds the campaign poster and the full programme details to that programme |
 | `vercel.json` | — | Clean URLs (`/programmes`, `/register`, `/admin`), old-link redirects, security headers |
 | `images/` | `/images/…` | DCP logo, Janet portrait, campaign photo, programme posters |
@@ -30,15 +32,19 @@ Old links keep working: `/events` and `/events.html` redirect permanently to `/p
 
 ## Supabase setup (one time)
 
-1. Open the project **vhecbmrrtkscwhgbmqcz** → **SQL Editor** → New query.
-2. Paste and run **`supabase/schema.sql`**. This creates `janet_events` and `janet_registrations` with Row Level Security:
-   - the public can **read active events** and **submit registrations** — nothing else;
-   - signed-in admins can read, edit and delete everything.
-3. Run **`supabase/seed.sql`** to add the "A New Dawn" intake (or add programmes by hand in `admin.html`).
-4. Run **`supabase/update-statuses.sql`** — adds the programme statuses (pending / live / ended), the registration-open switch, the on-site message field, **and the `programme-images` storage bucket** that powers poster uploads in the admin. Without this, uploads fail and the status selectors do nothing.
-5. Run **`supabase/seed-basketball.sql`** if you want the basketball tournament — a **generic, pending** placeholder you edit in `admin.html` and publish when ready.
-6. Run **`supabase/update-new-dawn.sql`** to attach the existing campaign poster and the full programme details.
-7. **Create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
+**Easiest: run one file.** Open the project **vhecbmrrtkscwhgbmqcz** → **SQL Editor** → New query, paste the whole of **`supabase/install-all.sql`**, and press Run. It creates the tables, the RLS policies, the statuses and the storage bucket, and seeds the programmes — in the right order, and it is safe to re-run.
+
+Prefer to run things one at a time? Use this exact order (each file is idempotent, and the seed files refuse to run with a clear message if the table is missing):
+
+1. **`supabase/schema.sql`** — tables, columns, Row Level Security, grants, `programme-images` storage bucket.
+2. **`supabase/update-statuses.sql`** — pending / live / ended statuses, registration state, on-site message column.
+3. **`supabase/seed.sql`** — the "A New Dawn" October intake.
+4. **`supabase/seed-basketball.sql`** — optional: a generic **pending** basketball placeholder you edit in `admin.html` and publish when ready.
+5. **`supabase/update-new-dawn.sql`** — the campaign poster and the full programme details.
+
+Then **create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
+
+> Running a seed before the schema is what produces `column "image_url" … does not exist`. The seed files now add any missing columns themselves and tell you if the table is absent.
 
 > ⚠️ Never put a `service_role` / secret key in this repo. `supabase-config.js` holds only the **publishable** key, which is safe in a browser and in a public repo because Row Level Security decides what it can do.
 
