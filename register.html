@@ -60,6 +60,15 @@ nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1
 .chooser{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 22px;margin-bottom:18px;box-shadow:0 12px 28px rgba(0,0,0,.05)}
 .chooser select{margin-top:2px}
 
+/* Closed / ended panel */
+.closedpanel{display:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:44px 30px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.05)}
+.closedpanel.on{display:block}
+.closedpanel .closed-ico{width:56px;height:56px;border-radius:50%;background:#EDEDED;color:#6B6B6B;font-size:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.closedpanel h2{font-family:'Fraunces',serif;font-size:24px;color:var(--green);margin-bottom:10px}
+.closedpanel p{color:#444;font-size:15px;max-width:48ch;margin:0 auto 8px}
+.closedpanel .closed-hint{color:#6B6B6B;font-size:14px}
+.closedpanel .closed-actions{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
 /* Poster + programme details */
 .poster-wrap{display:none;margin:26px auto 0;max-width:440px}
 .poster-wrap img{width:100%;border-radius:10px;border:1px solid var(--line);box-shadow:0 16px 36px rgba(0,0,0,.10)}
@@ -295,6 +304,17 @@ footer a{color:#8FB79B}
       </form>
     </div>
 
+    <!-- Registration closed / programme ended -->
+    <div class="closedpanel" id="closed-panel" style="display:none">
+      <div class="closed-ico" aria-hidden="true">✓</div>
+      <h2 id="closed-title">Registration closed</h2>
+      <p id="closed-msg">Registration for this programme is not open at the moment.</p>
+      <p class="closed-hint">Call or WhatsApp <strong>0708 276 788</strong> and we will help you find a place in another intake.</p>
+      <div class="closed-actions">
+        <a class="btn btn-primary" href="programmes.html">See other programmes</a>
+      </div>
+    </div>
+
     <!-- Success -->
     <div class="success" id="success" role="status" aria-live="polite">
       <div class="tick">✓</div>
@@ -405,6 +425,38 @@ footer a{color:#8FB79B}
     if (bullets.length) html += '<ul>' + bullets.map(function (b) { return '<li>' + esc(b.replace(/^-\s*/, '')) + '</li>'; }).join('') + '</ul>';
     return html;
   }
+
+  /* ---------- statuses (migration-tolerant) ---------- */
+  function statusOf(ev) { return ev.status || (ev.is_active ? 'live' : 'pending'); }
+  function isLive(ev) { return statusOf(ev) === 'live'; }
+  function isEnded(ev) { return statusOf(ev) === 'ended'; }
+  function regOpen(ev) { return ev.registration_open !== false; }
+  function canRegister(ev) { return isLive(ev) && regOpen(ev); }
+  function statusMessage(ev) {
+    if (ev.status_note) return ev.status_note;
+    if (isEnded(ev)) return 'This programme has ended.';
+    if (!regOpen(ev)) return 'Registration for this programme is closed.';
+    return 'Registration is open.';
+  }
+
+  // Open form, or a friendly panel when the programme is ended / registration closed.
+  function applyRegistrationState(ev) {
+    var area = document.getElementById('form-area');
+    var closed = document.getElementById('closed-panel');
+    var chooser = document.getElementById('chooser');
+
+    if (canRegister(ev)) {
+      closed.className = 'closedpanel';
+      area.style.display = 'block';
+      return;
+    }
+    area.style.display = 'none';
+    if (chooser) chooser.style.display = 'none';
+    document.getElementById('closed-title').textContent = isEnded(ev) ? 'This programme has ended' : 'Registration closed';
+    document.getElementById('closed-msg').textContent =
+      statusMessage(ev) + (ev.title ? ' You were looking at “' + ev.title + '”.' : '');
+    closed.className = 'closedpanel on';
+  }
   function renderDetails(details) {
     if (!details || !details.length) return '';
     var inner = details.map(function (d) {
@@ -438,6 +490,7 @@ footer a{color:#8FB79B}
       posterWrap.style.display = 'none';
     }
     document.getElementById('ev-details-wrap').innerHTML = renderDetails(ev.details);
+    applyRegistrationState(ev);
 
     var courses = (ev.courses && ev.courses.length) ? ev.courses : FALLBACK_EVENT.courses;
     els.courseOpts.innerHTML = courses.map(function (c, i) {
@@ -553,6 +606,11 @@ footer a{color:#8FB79B}
     // honeypot
     if (document.getElementById('company').value) { return; }
 
+    if (!canRegister(state.event)) {
+      showBanner('bad', statusMessage(state.event) + ' Call or WhatsApp 0708 276 788 and we will help you find a place in another intake.');
+      return;
+    }
+
     if (!validate()) {
       showBanner('bad', 'Please fix the highlighted fields and submit again.');
       var firstBad = els.form.querySelector('.bad, .err.on');
@@ -601,16 +659,16 @@ footer a{color:#8FB79B}
       if (hasSupabase()) {
         state.client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        var out = await state.client.from('janet_events').select('*').eq('is_active', true).order('event_date', { ascending: true });
+        var out = await state.client.from('janet_events').select('*').order('event_date', { ascending: true });
         if (out.error) throw out.error;
-        PROGRAMMES = out.data || [];
+        PROGRAMMES = (out.data || []).filter(function (p) { return statusOf(p) !== 'pending'; });
 
-        // pick the requested programme, else the first open one
+        // pick the requested programme, else the first one still open
         var chosen = null;
         if (slug) {
           chosen = PROGRAMMES.filter(function (p) { return p.slug === slug; })[0] || null;
         }
-        if (!chosen) chosen = PROGRAMMES[0] || null;
+        if (!chosen) chosen = PROGRAMMES.filter(canRegister)[0] || PROGRAMMES[0] || null;
 
         if (chosen) {
           buildChooser(slug, chosen);
@@ -633,9 +691,10 @@ footer a{color:#8FB79B}
   function buildChooser(slugParam, chosen) {
     var wrap = document.getElementById('chooser');
     var sel = document.getElementById('prog-pick');
-    if (slugParam || PROGRAMMES.length < 2) { wrap.style.display = 'none'; return; }
+    var open = PROGRAMMES.filter(canRegister);
+    if (slugParam || open.length < 2) { wrap.style.display = 'none'; return; }
 
-    sel.innerHTML = PROGRAMMES.map(function (p) {
+    sel.innerHTML = open.map(function (p) {
       var when = p.event_date ? ' — from ' + fmtDate(p.event_date) : '';
       return '<option value="' + esc(p.slug) + '"' + (p.slug === chosen.slug ? ' selected' : '') + '>' +
         esc(p.title) + esc(when) + '</option>';

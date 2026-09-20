@@ -26,28 +26,35 @@ create table if not exists public.janet_events (
   courses         text[] not null default '{}',
   image_url       text,
   details         jsonb not null default '[]'::jsonb,
+  status          text not null default 'live',        -- pending | live | ended
+  registration_open boolean not null default true,
+  status_note     text,
   google_form_url text,
-  is_active       boolean not null default true
+  is_active       boolean not null default true        -- deprecated: superseded by status
 );
 
 -- For databases created before these columns existed:
 alter table public.janet_events add column if not exists image_url text;
 alter table public.janet_events add column if not exists details jsonb not null default '[]'::jsonb;
+alter table public.janet_events add column if not exists status text not null default 'live';
+alter table public.janet_events add column if not exists registration_open boolean not null default true;
+alter table public.janet_events add column if not exists status_note text;
 
 create unique index if not exists janet_events_slug_key on public.janet_events (slug);
 
 alter table public.janet_events enable row level security;
 
-drop policy if exists "Public can read active events"      on public.janet_events;
-drop policy if exists "Admins can read all events"         on public.janet_events;
-drop policy if exists "Admins can insert events"           on public.janet_events;
-drop policy if exists "Admins can update events"           on public.janet_events;
-drop policy if exists "Admins can delete events"           on public.janet_events;
+drop policy if exists "Public can read active events"    on public.janet_events;
+drop policy if exists "Public can read published events" on public.janet_events;
+drop policy if exists "Admins can read all events"       on public.janet_events;
+drop policy if exists "Admins can insert events"         on public.janet_events;
+drop policy if exists "Admins can update events"         on public.janet_events;
+drop policy if exists "Admins can delete events"         on public.janet_events;
 
-create policy "Public can read active events"
+create policy "Public can read published events"
   on public.janet_events for select
   to anon
-  using (is_active = true);
+  using (status <> 'pending');
 
 create policy "Admins can read all events"
   on public.janet_events for select
@@ -133,3 +140,31 @@ grant select, insert, update, delete on public.janet_events        to authentica
 
 grant insert                         on public.janet_registrations to anon;
 grant select, insert, update, delete on public.janet_registrations to authenticated;
+
+-- ─────────────────────────────────────────────────────────────
+-- 4 · Poster image storage (uploaded from admin.html)
+-- ─────────────────────────────────────────────────────────────
+insert into storage.buckets (id, name, public)
+values ('programme-images', 'programme-images', true)
+on conflict (id) do update set public = true;
+
+drop policy if exists "Public can view programme images"   on storage.objects;
+drop policy if exists "Admins can upload programme images" on storage.objects;
+drop policy if exists "Admins can update programme images" on storage.objects;
+drop policy if exists "Admins can delete programme images" on storage.objects;
+
+create policy "Public can view programme images"
+  on storage.objects for select to anon, authenticated
+  using (bucket_id = 'programme-images');
+
+create policy "Admins can upload programme images"
+  on storage.objects for insert to authenticated
+  with check (bucket_id = 'programme-images');
+
+create policy "Admins can update programme images"
+  on storage.objects for update to authenticated
+  using (bucket_id = 'programme-images') with check (bucket_id = 'programme-images');
+
+create policy "Admins can delete programme images"
+  on storage.objects for delete to authenticated
+  using (bucket_id = 'programme-images');

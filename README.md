@@ -35,9 +35,10 @@ Old links keep working: `/events` and `/events.html` redirect permanently to `/p
    - the public can **read active events** and **submit registrations** — nothing else;
    - signed-in admins can read, edit and delete everything.
 3. Run **`supabase/seed.sql`** to add the "A New Dawn" intake (or add programmes by hand in `admin.html`).
-4. Run **`supabase/seed-basketball.sql`** if you want the basketball tournament — it is inserted as a **draft** (`is_active = false`), so it stays hidden until you press *Activate* on it in `admin.html`.
-5. Run **`supabase/update-new-dawn.sql`** to attach the campaign poster image and the full programme details (what you'll learn, what's included, what to bring, venue, deadline).
-6. **Create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
+4. Run **`supabase/update-statuses.sql`** — adds the programme statuses (pending / live / ended), the registration-open switch, the on-site message field, **and the `programme-images` storage bucket** that powers poster uploads in the admin. Without this, uploads fail and the status selectors do nothing.
+5. Run **`supabase/seed-basketball.sql`** if you want the basketball tournament — a **generic, pending** placeholder you edit in `admin.html` and publish when ready.
+6. Run **`supabase/update-new-dawn.sql`** to attach the existing campaign poster and the full programme details.
+7. **Create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
 
 > ⚠️ Never put a `service_role` / secret key in this repo. `supabase-config.js` holds only the **publishable** key, which is safe in a browser and in a public repo because Row Level Security decides what it can do.
 
@@ -100,12 +101,33 @@ All public pages (`/`, `/programmes`, `/register`) share **one navigation bar**:
 
 Every generic link labelled *Register* or *Programmes* — in the nav, the hero, the band and the page headings — opens the **Programmes tab**. Registration is then reached from a specific programme: each programme card and detail sheet has its own **Register** button that opens `/register?event=<slug>`. So the flow is always: choose a programme → register for it.
 
+## Programme statuses
+
+Every programme has a status, set in `admin.html` (or in the database):
+
+| Status | Shown publicly? | Message on the programmes page | Register button |
+|---|---|---|---|
+| **Pending** | No — hidden draft | — | — |
+| **Live** + registration open | Yes, under *Open now* | “Registration open” (or “Registration closes soon” within 7 days) | Yes |
+| **Live** + registration closed | Yes | “Registration closed” | No |
+| **Ended** | Yes, under *Previous programmes* | “This programme has ended” | No |
+
+Set **Message shown on the site** on a programme to override the automatic text (for example “Dates and venue to be confirmed”).
+
+If a visitor opens a registration link for an ended or closed programme, the form is replaced by a clear panel explaining the status, with the WhatsApp number and a link back to other programmes.
+
+## Poster images
+
+Posters are uploaded straight from `admin.html` — **click the drop zone (or drag an image onto it)**. The file goes to the Supabase Storage bucket `programme-images` and the public URL is saved on the programme. No repository commits, no URLs to paste. JPG, PNG, WebP or GIF up to 5 MB; use *Remove image* to detach one.
+
 ## Editing content
 
 | You want to change | Where |
 |---|---|
 | Programmes, dates, courses, opening/closing a programme | `admin.html` (no code, no redeploy) |
-| A programme's poster image | `admin.html` → **Poster / image URL** — upload the file into `images/`, then enter `images/your-file.png` |
+| A programme's poster image | `admin.html` → **Poster image** — click or drag an image to upload it (stored in Supabase Storage) |
+| A programme's status (pending / live / ended) and whether registration is open | `admin.html` → **Status** and **Registration** selects, or the quick buttons on each row in *All programmes* |
+| The message shown on a programme card | `admin.html` → **Message shown on the site** (empty = automatic message) |
 | A programme's details (what's included, what to bring, venue, deadline) | `admin.html` → **+ Add more details** — one heading + text per block; lines starting with `-` become bullets |
 | Registration questions | `register.html` — the sections marked `01`, `02`, `03` |
 | Who can see registrations | Supabase → Authentication → Users (add/remove admins) |

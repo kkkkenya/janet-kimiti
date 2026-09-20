@@ -217,11 +217,14 @@ footer p{font-size:11px;color:#9A9A9A}
   }
 
   var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  client.from('janet_events').select('slug,title,tag_line,description,event_date,courses').eq('is_active', true)
+  client.from('janet_events').select('*')
     .order('event_date', { ascending: true })
     .then(function (out) {
       if (out.error) { console.error(out.error); return; }
       var rows = (out.data || []).filter(function (ev) {
+        var st = ev.status || (ev.is_active ? 'live' : 'pending');
+        if (st !== 'live') return false;                  // pending and ended are never promoted
+        if (ev.registration_open === false) return false;  // closed registration is not promoted
         if (!ev.event_date) return true;
         var dt = new Date(ev.event_date + 'T00:00:00');
         return isNaN(dt) || dt >= new Date(new Date().toDateString());

@@ -56,6 +56,20 @@ nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1
 .pcard .thumb img{width:100%;height:100%;object-fit:cover}
 .pcard .thumb .noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9A9482}
 .pcard .thumb .ribbon{position:absolute;left:12px;top:12px;background:rgba(12,59,30,.92);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:20px}
+.pcard .thumb .ribbon.closed{background:rgba(150,120,20,.94)}
+.pcard .thumb .ribbon.soon{background:rgba(193,39,45,.94)}
+.pcard.is-ended .thumb img{filter:saturate(.55)}
+
+/* status message on every card */
+.notice{display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;margin-top:12px}
+.notice .dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--accent)}
+.notice.open{color:var(--accent)}
+.notice.soon{color:#8A6A16}
+.notice.soon .dot{background:#C99A22}
+.notice.closed{color:#8A6A16}
+.notice.closed .dot{background:#C99A22}
+.notice.ended{color:#6B6B6B}
+.notice.ended .dot{background:#9A9A9A}
 .pcard .body{padding:18px;display:flex;flex-direction:column;flex:1}
 .pcard .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:7px}
 .pcard h3{font-family:'Fraunces',serif;font-size:20px;line-height:1.2;color:var(--green);margin-bottom:8px}
@@ -216,6 +230,45 @@ footer p{font-size:11px;color:#9A9A9A}
     var dt = new Date(d + 'T00:00:00');
     return !isNaN(dt) && dt < new Date(new Date().toDateString());
   }
+
+  /* ---------- statuses ---------- */
+  // Works with or without the status column (falls back to is_active),
+  // so the page keeps working before update-statuses.sql has been run.
+  function statusOf(ev) { return ev.status || (ev.is_active ? 'live' : 'pending'); }
+  function isLive(ev) { return statusOf(ev) === 'live'; }
+  function isEnded(ev) { return statusOf(ev) === 'ended'; }
+  function regOpen(ev) { return ev.registration_open !== false; }
+  function closesSoon(ev) {
+    if (!ev.event_date) return false;
+    var d = new Date(ev.event_date + 'T00:00:00');
+    if (isNaN(d)) return false;
+    var days = (d - new Date(new Date().toDateString())) / 86400000;
+    return days >= 0 && days <= 7;
+  }
+  function canRegister(ev) { return isLive(ev) && regOpen(ev); }
+  function statusKind(ev) {
+    if (isEnded(ev)) return 'ended';
+    if (!regOpen(ev)) return 'closed';
+    if (closesSoon(ev)) return 'soon';
+    return 'open';
+  }
+  function statusMessage(ev) {
+    if (ev.status_note) return ev.status_note;
+    var kind = statusKind(ev);
+    if (kind === 'ended') return 'This programme has ended';
+    if (kind === 'closed') return 'Registration closed';
+    if (kind === 'soon') return 'Registration closes soon';
+    return 'Registration open';
+  }
+  function ribbon(ev) {
+    if (isEnded(ev)) return '<span class="ribbon">Ended</span>';
+    if (!regOpen(ev)) return '<span class="ribbon closed">Closed</span>';
+    if (closesSoon(ev)) return '<span class="ribbon soon">Closing soon</span>';
+    return '';
+  }
+  function notice(ev) {
+    return '<p class="notice ' + statusKind(ev) + '"><span class="dot"></span>' + esc(statusMessage(ev)) + '</p>';
+  }
   function renderBody(text) {
     var lines = String(text || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
     if (!lines.length) return '';
@@ -264,19 +317,18 @@ footer p{font-size:11px;color:#9A9A9A}
     var thumb = ev.image_url
       ? '<img src="' + esc(ev.image_url) + '" alt="' + esc(ev.title) + ' poster" loading="lazy">'
       : '<div class="noimg">Programme</div>';
-    return '<article class="pcard">' +
-      '<div class="thumb">' + thumb +
-        (isPast(ev.event_date) ? '<span class="ribbon">Finished</span>' : '') +
-      '</div>' +
+    return '<article class="pcard' + (isEnded(ev) ? ' is-ended' : '') + '">' +
+      '<div class="thumb">' + thumb + ribbon(ev) + '</div>' +
       '<div class="body">' +
         (ev.tag_line ? '<div class="tag">' + esc(ev.tag_line) + '</div>' : '') +
         '<h3>' + esc(ev.title) + '</h3>' +
         (ev.description ? '<p class="desc">' + esc(ev.description) + '</p>' : '') +
         '<div class="meta">' + metaLine(ev) + '</div>' +
         ((ev.courses || []).length ? '<div class="pills">' + pills(ev.courses, 3) + '</div>' : '') +
+        notice(ev) +
         '<div class="cta">' +
           '<button class="btn btn-ghost" type="button" data-open="' + esc(ev.slug) + '">Details</button>' +
-          '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register</a>' +
+          (canRegister(ev) ? '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register</a>' : '') +
         '</div>' +
       '</div>' +
     '</article>';
@@ -291,9 +343,11 @@ footer p{font-size:11px;color:#9A9A9A}
       '<div class="event-meta">' + metaLine(ev) + '</div>' +
       ((ev.courses || []).length ? '<div class="event-courses">' + pills(ev.courses) + '</div>' : '') +
       renderDetails(ev.details) +
+      notice(ev) +
       '<div class="event-cta">' +
-        '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register now</a>' +
-        '<span class="note">Fully sponsored · no fees</span>' +
+        (canRegister(ev)
+          ? '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register now</a><span class="note">Fully sponsored · no fees</span>'
+          : '<span class="note">' + esc(statusMessage(ev)) + ' — call or WhatsApp 0708 276 788 for details.</span>') +
       '</div>' +
     '</article>';
   }
@@ -316,8 +370,11 @@ footer p{font-size:11px;color:#9A9A9A}
       '<div class="event-meta">' + metaLine(ev) + '</div>' +
       ((ev.courses || []).length ? '<div class="event-courses">' + pills(ev.courses) + '</div>' : '') +
       detailBlocks(ev.details) +
+      notice(ev) +
       '<div class="event-cta">' +
-        '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register for this programme</a>' +
+        (canRegister(ev)
+          ? '<a class="btn btn-primary" href="' + registerHref(ev.slug) + '">Register for this programme</a>'
+          : '<span class="note">' + esc(statusMessage(ev)) + '</span>') +
         '<span class="note">Call / WhatsApp 0708 276 788</span>' +
       '</div>';
     backdrop.hidden = false;
@@ -356,8 +413,9 @@ footer p{font-size:11px;color:#9A9A9A}
   function render() {
     var q = currentQuery();
     var rows = EVENT_LIST.filter(function (ev) { return matches(ev, q); });
-    var upcoming = rows.filter(function (ev) { return !isPast(ev.event_date); });
-    var past = rows.filter(function (ev) { return isPast(ev.event_date); });
+    // status is authoritative; date only orders them
+    var open = rows.filter(function (ev) { return !isEnded(ev); });
+    var ended = rows.filter(isEnded);
 
     var featured = document.getElementById('featured');
     var gUp = document.getElementById('group-upcoming');
@@ -379,13 +437,13 @@ footer p{font-size:11px;color:#9A9A9A}
     featured.hidden = true;
     toolbar.hidden = false;
 
-    gUp.hidden = !upcoming.length;
-    document.getElementById('grid-upcoming').innerHTML = upcoming.map(compactCard).join('');
+    gUp.hidden = !open.length;
+    document.getElementById('grid-upcoming').innerHTML = open.map(compactCard).join('');
     document.getElementById('head-upcoming').textContent =
-      upcoming.length === 1 ? 'Open now' : 'Open now — ' + upcoming.length + ' programmes';
+      open.length === 1 ? 'Open now' : 'Open now — ' + open.length + ' programmes';
 
-    gPast.hidden = !past.length;
-    document.getElementById('grid-past').innerHTML = past.map(compactCard).join('');
+    gPast.hidden = !ended.length;
+    document.getElementById('grid-past').innerHTML = ended.map(compactCard).join('');
 
     if (!rows.length) {
       gUp.hidden = true; gPast.hidden = true;
@@ -409,14 +467,15 @@ footer p{font-size:11px;color:#9A9A9A}
       return;
     }
     var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    var out = await client.from('janet_events').select('*').eq('is_active', true).order('event_date', { ascending: true });
+    // no server-side status filter: works before and after update-statuses.sql
+    var out = await client.from('janet_events').select('*').order('event_date', { ascending: true });
 
     if (out.error) {
       state.textContent = 'Couldn\u2019t load programmes right now. Call/WhatsApp 0708 276 788 to register directly.';
       console.error(out.error);
       return;
     }
-    EVENT_LIST = out.data || [];
+    EVENT_LIST = (out.data || []).filter(function (ev) { return statusOf(ev) !== 'pending'; });
     if (!EVENT_LIST.length) {
       state.textContent = 'No programmes open right now — check back soon.';
       return;

@@ -84,6 +84,26 @@ textarea{min-height:80px;resize:vertical}
 .detail-row .db{min-height:74px}
 .detail-row .del{margin-top:8px;color:var(--red);border-color:var(--red)}
 
+/* Image upload */
+.dropzone{border:1.5px dashed #CFC9B8;border-radius:10px;padding:20px;text-align:center;background:#FCFBF6;cursor:pointer;transition:border-color .15s,background .15s}
+.dropzone:hover,.dropzone.over{border-color:var(--accent);background:#F4F8F4}
+.dropzone .big{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:600}
+.dropzone .small{font-size:12.5px;color:#6B6B6B;margin-top:6px}
+.dropzone input[type=file]{display:none}
+.imgpreview{margin-top:12px;display:flex;gap:14px;align-items:flex-start}
+.imgpreview img{width:180px;height:auto;border-radius:8px;border:1px solid var(--line);display:block}
+.imgpreview .meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6B6B6B;line-height:1.6}
+.imgbar{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+
+/* Status pills */
+.badges{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.pill-s{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:20px;background:#F1EFE6;border:1px solid var(--line);color:#4A4A4A;white-space:nowrap}
+.pill-s.st-live{background:#E8F7EC;border-color:#CBE9D3;color:var(--accent)}
+.pill-s.st-pending{background:#FDF5E3;border-color:#F0E2BE;color:#8A6A16}
+.pill-s.st-ended{background:#EDEDED;border-color:#DCDCDC;color:#666}
+.statusgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.statusgrid .help{font-size:12px;color:#6B6B6B;margin-top:6px;line-height:1.5}
+
 .event-row{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:16px}
 .event-row.inactive{opacity:.55}
 .event-row .info b{font-family:'Fraunces',serif;font-size:16px;color:var(--green);display:block;margin-bottom:3px}
@@ -191,9 +211,38 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
         <label for="ev-courses">Course / category tags (comma-separated)</label>
         <input id="ev-courses" placeholder="☕ Coffee Barista, 🍽️ Hospitality, 🧁 Baking &amp; Pastry, 🥗 Nutrition">
 
-        <label for="ev-image">Poster / image URL</label>
-        <input id="ev-image" placeholder="images/new-dawn-poster.png  or  https://…">
-        <p class="hint" style="margin-top:6px">Upload the poster into the <code>images/</code> folder in the repository, then reference it as <code>images/your-file.png</code> — or paste any public image URL. It appears on the programme card and the registration page.</p>
+        <label for="ev-image-file">Poster image</label>
+        <div class="dropzone" id="dropzone">
+          <div class="big">Click to choose an image</div>
+          <div class="small">or drag a poster here — JPG, PNG or WebP, up to 5 MB</div>
+          <input type="file" id="ev-image-file" accept="image/png,image/jpeg,image/webp,image/gif">
+        </div>
+        <div id="img-preview"></div>
+        <div class="hint" id="img-status" style="margin-top:8px">Uploaded images are stored in your Supabase project and served from there — nothing to paste, nothing to commit.</div>
+
+        <div class="statusgrid" style="margin-top:22px">
+          <div>
+            <label for="ev-status">Status</label>
+            <select id="ev-status">
+              <option value="pending">Pending — hidden draft</option>
+              <option value="live">Live — shown on the site</option>
+              <option value="ended">Ended — shown under previous programmes</option>
+            </select>
+            <p class="help">Pending programmes never appear publicly. Ended ones stay visible as an archive.</p>
+          </div>
+          <div>
+            <label for="ev-reg">Registration</label>
+            <select id="ev-reg">
+              <option value="true">Open — the form accepts entries</option>
+              <option value="false">Closed — no new entries</option>
+            </select>
+            <p class="help">Closed shows “Registration closed” on the programme card.</p>
+          </div>
+        </div>
+
+        <label for="ev-note">Message shown on the site (optional)</label>
+        <input id="ev-note" placeholder="e.g. Dates and venue to be confirmed">
+        <p class="hint" style="margin-top:6px">Leave empty to use the automatic message for the status.</p>
 
         <div class="detail-head">
           <span class="lbl">Programme details (shown on the site)</span>
@@ -204,10 +253,6 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
 
         <label for="ev-form">Google Form embed URL (optional — the built-in form is used by default)</label>
         <input id="ev-form" placeholder="Leave empty to use the built-in registration form">
-        <div class="checkbox-row">
-          <input type="checkbox" id="ev-active" checked>
-          <label for="ev-active">Active (visible on the site)</label>
-        </div>
         <div class="btn-row">
           <button class="btn btn-primary" id="save-btn">Save Event</button>
           <button class="btn btn-ghost" id="cancel-btn" style="display:none">Cancel Edit</button>
@@ -215,7 +260,7 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
       </div>
 
       <div class="card">
-        <h2>All Events</h2>
+        <h2>All programmes</h2>
         <div id="events-list"><p class="sub">Loading…</p></div>
       </div>
     </div>
@@ -329,6 +374,58 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
   });
 
   /* ---------- Events CRUD ---------- */
+  /* ---------- Poster upload (Supabase Storage) ---------- */
+  var IMAGE_URL = '';
+
+  function setImage(url) {
+    IMAGE_URL = url || '';
+    var box = document.getElementById('img-preview');
+    if (!IMAGE_URL) { box.innerHTML = ''; return; }
+    var name = IMAGE_URL.split('/').pop().split('?')[0];
+    box.innerHTML = '<div class="imgpreview"><img src="' + esc(IMAGE_URL) + '" alt="Poster preview">' +
+      '<div><div class="meta">' + esc(name) + '</div>' +
+      '<div class="imgbar"><button type="button" class="btn btn-ghost btn-sm" id="img-remove">Remove image</button></div></div></div>';
+    document.getElementById('img-remove').addEventListener('click', function () { setImage(null); });
+  }
+
+  async function uploadImage(file) {
+    var status = document.getElementById('img-status');
+    if (!file) return;
+    if (!/^image\//.test(file.type)) { showMsg('That file is not an image.', false); return; }
+    if (file.size > 5 * 1024 * 1024) { showMsg('Images must be under 5 MB.', false); return; }
+
+    var ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    var path = 'programme-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7) + '.' + ext;
+    status.textContent = 'Uploading…';
+    var up = await client.storage.from('programme-images').upload(path, file, { cacheControl: '31536000', upsert: false, contentType: file.type });
+    if (up.error) {
+      status.textContent = 'Upload failed: ' + up.error.message + ' — has update-statuses.sql been run in Supabase?';
+      showMsg('Upload failed: ' + up.error.message, false);
+      return;
+    }
+    var pub = client.storage.from('programme-images').getPublicUrl(path);
+    setImage(pub.data.publicUrl);
+    status.textContent = 'Uploaded — save the programme to attach it.';
+  }
+
+  (function wireUpload() {
+    var zone = document.getElementById('dropzone');
+    var input = document.getElementById('ev-image-file');
+    if (!zone || !input) return;
+    zone.addEventListener('click', function () { input.click(); });
+    input.addEventListener('change', function () { if (input.files && input.files[0]) uploadImage(input.files[0]); });
+    ['dragover', 'dragenter'].forEach(function (t) {
+      zone.addEventListener(t, function (e) { e.preventDefault(); zone.classList.add('over'); });
+    });
+    ['dragleave', 'drop'].forEach(function (t) {
+      zone.addEventListener(t, function (e) { e.preventDefault(); zone.classList.remove('over'); });
+    });
+    zone.addEventListener('drop', function (e) {
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) uploadImage(f);
+    });
+  })();
+
   function getForm() {
     return {
       id: document.getElementById('ev-id').value || null,
@@ -339,10 +436,13 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
       event_date: document.getElementById('ev-date').value || null,
       location: document.getElementById('ev-location').value.trim(),
       courses: document.getElementById('ev-courses').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
-      image_url: document.getElementById('ev-image').value.trim() || null,
+      image_url: IMAGE_URL || null,
       details: collectDetails(),
+      status: document.getElementById('ev-status').value,
+      registration_open: document.getElementById('ev-reg').value === 'true',
+      status_note: document.getElementById('ev-note').value.trim() || null,
       google_form_url: document.getElementById('ev-form').value.trim() || null,
-      is_active: document.getElementById('ev-active').checked
+      is_active: document.getElementById('ev-status').value !== 'pending'
     };
   }
   function collectDetails() {
@@ -371,12 +471,15 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
 
   function clearEventForm() {
     document.getElementById('ev-id').value = '';
-    ['ev-slug', 'ev-title', 'ev-tag', 'ev-desc', 'ev-location', 'ev-courses', 'ev-form', 'ev-image'].forEach(function (id) {
+    ['ev-slug', 'ev-title', 'ev-tag', 'ev-desc', 'ev-location', 'ev-courses', 'ev-form', 'ev-note'].forEach(function (id) {
       document.getElementById(id).value = '';
     });
     document.getElementById('details-editor').innerHTML = '';
     document.getElementById('ev-date').value = '';
-    document.getElementById('ev-active').checked = true;
+    document.getElementById('ev-status').value = 'pending';
+    document.getElementById('ev-reg').value = 'true';
+    setImage(null);
+    document.getElementById('img-status').textContent = 'Uploaded images are stored in your Supabase project and served from there — nothing to paste, nothing to commit.';
     document.getElementById('form-title').textContent = 'Add New Event';
     document.getElementById('cancel-btn').style.display = 'none';
   }
@@ -389,6 +492,7 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
       slug: f.slug, title: f.title, tag_line: f.tag_line, description: f.description,
       event_date: f.event_date, location: f.location, courses: f.courses,
       image_url: f.image_url, details: f.details,
+      status: f.status, registration_open: f.registration_open, status_note: f.status_note,
       google_form_url: f.google_form_url, is_active: f.is_active
     };
     var out;
@@ -416,12 +520,19 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
     if (!allEvents.length) { listEl.innerHTML = '<p class="sub">No events yet.</p>'; return; }
 
     listEl.innerHTML = allEvents.map(function (ev) {
-      return '<div class="event-row' + (ev.is_active ? '' : ' inactive') + '">' +
+      var st = ev.status || (ev.is_active ? 'live' : 'pending');
+      var regOpen = ev.registration_open !== false;
+      return '<div class="event-row' + (st === 'pending' ? ' inactive' : '') + '">' +
         '<div class="info"><b>' + esc(ev.title) + '</b><span>/' + esc(ev.slug) +
-          (ev.event_date ? ' · ' + esc(ev.event_date) : '') + (ev.is_active ? '' : ' · inactive') + '</span></div>' +
+          (ev.event_date ? ' · ' + esc(ev.event_date) : '') + '</span>' +
+          '<div class="badges"><span class="pill-s st-' + st + '">' + st + '</span>' +
+          (st === 'live' ? '<span class="pill-s">' + (regOpen ? 'registration open' : 'registration closed') + '</span>' : '') +
+          (ev.status_note ? '<span class="pill-s">"' + esc(ev.status_note) + '"</span>' : '') +
+          '</div></div>' +
         '<div class="actions">' +
           '<button data-edit="' + ev.id + '">Edit</button>' +
-          '<button data-toggle="' + ev.id + '" data-state="' + ev.is_active + '">' + (ev.is_active ? 'Deactivate' : 'Activate') + '</button>' +
+          '<button data-status="' + ev.id + '" data-set="' + (st === 'live' ? 'pending' : 'live') + '">' + (st === 'live' ? 'Set pending' : 'Set live') + '</button>' +
+          (st !== 'ended' ? '<button data-status="' + ev.id + '" data-set="ended">Mark ended</button>' : '') +
           '<button data-copy="' + esc(ev.slug) + '">Copy link</button>' +
           '<button class="danger" data-delete="' + ev.id + '">Delete</button>' +
         '</div></div>';
@@ -440,7 +551,10 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
         document.getElementById('ev-date').value = ev.event_date || '';
         document.getElementById('ev-location').value = ev.location || '';
         document.getElementById('ev-courses').value = (ev.courses || []).join(', ');
-        document.getElementById('ev-image').value = ev.image_url || '';
+        setImage(ev.image_url || null);
+        document.getElementById('ev-status').value = ev.status || (ev.is_active ? 'live' : 'pending');
+        document.getElementById('ev-reg').value = (ev.registration_open === false) ? 'false' : 'true';
+        document.getElementById('ev-note').value = ev.status_note || '';
         document.getElementById('details-editor').innerHTML = '';
         (ev.details || []).forEach(function (d) {
           addDetailRow(d.h || d.heading || '', d.b || d.body || '');
@@ -452,11 +566,11 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
-    listEl.querySelectorAll('[data-toggle]').forEach(function (btn) {
+    listEl.querySelectorAll('[data-status]').forEach(function (btn) {
       btn.addEventListener('click', async function () {
-        var nowActive = btn.dataset.state !== 'true';
-        var out2 = await client.from('janet_events').update({ is_active: nowActive }).eq('id', btn.dataset.toggle);
+        var out2 = await client.from('janet_events').update({ status: btn.dataset.set }).eq('id', btn.dataset.status);
         if (out2.error) { showMsg('Error: ' + out2.error.message, false); return; }
+        showMsg('Status set to ' + btn.dataset.set + '.', true);
         await loadEvents();
       });
     });
