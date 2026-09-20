@@ -10,14 +10,15 @@ No build step, no framework, no npm. Plain HTML + CSS + vanilla JS, with **Supab
 
 | File | What it is |
 |---|---|
+| `register.html` | **Main registration page** — built-in form (Google-Form style) that writes to Supabase. Works standalone, or per programme via `?event=slug` |
+| `events.html` | Programmes subpage — the programme list, poster and full details, linking into registration |
 | `index.html` | Home — hero, the 5-point contract, about, support (Till 5973293) |
-| `events.html` | Programmes & events, loaded live from Supabase |
-| `register.html` | Registration form (built-in, Google-Form style) — writes to Supabase |
-| `admin.html` | Admin: manage events **and** view/export registrations (login required) |
+| `admin.html` | Admin: manage programmes (poster, details) **and** view/export registrations (login required) |
 | `supabase-config.js` | Public Supabase URL + publishable key |
 | `supabase/schema.sql` | Database schema + Row Level Security (run once) |
 | `supabase/seed.sql` | Seeds the "A New Dawn" October intake programme |
-| `images/` | DCP logo, Janet portrait, campaign photo |
+| `supabase/update-new-dawn.sql` | Adds the campaign poster and the full programme details to that programme |
+| `images/` | DCP logo, Janet portrait, campaign photo, programme posters |
 
 ---
 
@@ -27,8 +28,9 @@ No build step, no framework, no npm. Plain HTML + CSS + vanilla JS, with **Supab
 2. Paste and run **`supabase/schema.sql`**. This creates `janet_events` and `janet_registrations` with Row Level Security:
    - the public can **read active events** and **submit registrations** — nothing else;
    - signed-in admins can read, edit and delete everything.
-3. Run **`supabase/seed.sql`** to add the "A New Dawn" intake (or add events by hand in `admin.html`).
-4. **Create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
+3. Run **`supabase/seed.sql`** to add the "A New Dawn" intake (or add programmes by hand in `admin.html`).
+4. Run **`supabase/update-new-dawn.sql`** to attach the campaign poster image and the full programme details (what you'll learn, what's included, what to bring, venue, deadline).
+5. **Create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
 
 > ⚠️ Never put a `service_role` / secret key in this repo. `supabase-config.js` holds only the **publishable** key, which is safe in a browser and in a public repo because Row Level Security decides what it can do.
 
@@ -66,6 +68,8 @@ Vercel deploys automatically. No build command needed — it is a static site; t
 | You want to change | Where |
 |---|---|
 | Programmes, dates, courses, opening/closing a programme | `admin.html` (no code, no redeploy) |
+| A programme's poster image | `admin.html` → **Poster / image URL** — upload the file into `images/`, then enter `images/your-file.png` |
+| A programme's details (what's included, what to bring, venue, deadline) | `admin.html` → **+ Add more details** — one heading + text per block; lines starting with `-` become bullets |
 | Registration questions | `register.html` — the sections marked `01`, `02`, `03` |
 | Who can see registrations | Supabase → Authentication → Users (add/remove admins) |
 | Home page copy, contract points, Till number | `index.html` (plain HTML) |
@@ -88,4 +92,6 @@ Vercel deploys automatically. No build command needed — it is a static site; t
 ## Known gaps
 
 - Home page still has two placeholders: Janet's full bio and the authorized-by / IEBC disclaimer line. Both should be filled before public launch.
+- The programme details added to "A New Dawn" (class hours, what's included, what to bring, venue, deadline) are **drafted placeholders** — confirm the real arrangements with the campaign team and edit them in `admin.html`.
 - The admin's Google Form field is kept for compatibility but the built-in form is now the default path.
+- Registration page is the main entry point; `events.html` is the programmes subpage beneath it.

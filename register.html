@@ -33,6 +33,21 @@ nav a.navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacin
 .chip{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;background:var(--paper);border:1px solid var(--line);color:var(--green);padding:6px 13px;border-radius:20px}
 .chip.hot{background:#FCEBEC;border-color:#F3C9CB;color:var(--red)}
 
+/* Poster + programme details */
+.poster-wrap{display:none;margin:26px auto 0;max-width:440px}
+.poster-wrap img{width:100%;border-radius:10px;border:1px solid var(--line);box-shadow:0 16px 36px rgba(0,0,0,.10)}
+.details-wrap{max-width:720px;margin:24px auto 0;text-align:left}
+.event-details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 22px}
+.event-details summary{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);cursor:pointer;font-weight:600;list-style:none}
+.event-details summary::-webkit-details-marker{display:none}
+.event-details summary::after{content:"＋";float:right;font-weight:700}
+.event-details[open] summary::after{content:"－"}
+.detail-block{margin-top:16px}
+.detail-block h4{font-family:'Fraunces',serif;font-size:16px;color:var(--green);margin-bottom:6px}
+.detail-block p{font-size:14.5px;color:#444}
+.detail-block ul{margin:6px 0 0 18px}
+.detail-block li{font-size:14.5px;color:#444;margin-bottom:5px}
+
 /* Form */
 .formwrap{padding:34px 0 20px}
 .req-note{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin:0 0 14px}
@@ -106,6 +121,7 @@ footer a{color:#8FB79B}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 @media (max-width:640px){
+  nav .navlinks .navlink:first-child{display:none}
   .opts.grid2{grid-template-columns:1fr}
   .submitbar{flex-direction:column;align-items:stretch}
   .submitbar .btn{width:100%;text-align:center}
@@ -117,7 +133,8 @@ footer a{color:#8FB79B}
 <nav>
   <a class="brand" href="index.html"><img src="images/DCP%20LOGO.png" alt="DCP — Democratic Congress Party" onerror="this.style.display='none'"><span>MAMA SUKARI</span></a>
   <div class="navlinks">
-    <a class="navlink" href="events.html">← All Programmes</a>
+    <a class="navlink" href="index.html">Home</a>
+    <a class="navlink" href="events.html">All Programmes</a>
   </div>
 </nav>
 
@@ -127,6 +144,8 @@ footer a{color:#8FB79B}
     <h1 id="ev-title">Loading…</h1>
     <p id="ev-sub"></p>
     <div class="meta" id="ev-meta"></div>
+    <figure class="poster-wrap" id="ev-poster-wrap"><img id="ev-poster" src="" alt=""></figure>
+    <div class="details-wrap" id="ev-details-wrap"></div>
   </div>
 </section>
 
@@ -285,7 +304,13 @@ footer a{color:#8FB79B}
     description: 'Kazi sio CV peke yake, ni SKILL! Fully sponsored short courses for youths, young mothers and residents of Kahawa Sukari Ward. Learn. Create. Earn.',
     event_date: '2026-10-05',
     location: 'Kahawa Sukari Ward',
-    courses: ['☕ Coffee Barista', '🍽️ Hospitality', '🧁 Baking & Pastry', '🥗 Nutrition']
+    image_url: 'images/new-dawn-poster.png',
+    courses: ['☕ Coffee Barista', '🍽️ Hospitality', '🧁 Baking & Pastry', '🥗 Nutrition'],
+    details: [
+      { h: 'What is included', b: '- 100% fully sponsored tuition — no fees\n- Training materials, tools and ingredients\n- Certificate of completion\n- Refreshments during sessions' },
+      { h: 'Who can join', b: 'Open to all youths, young mothers and residents of Kahawa Sukari Ward. No prior experience needed.' },
+      { h: 'How the programme runs', b: 'Four weeks of practical classes, Monday to Friday, 9:00am – 1:00pm, in small groups.' }
+    ]
   };
 
   var PHONE_RE = /^(?:\+?254|0)(?:7|1)\d{8}$/;
@@ -337,6 +362,26 @@ footer a{color:#8FB79B}
     return dt.toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
+  function renderBody(text) {
+    var lines = String(text || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+    if (!lines.length) return '';
+    var bullets = lines.filter(function (l) { return l.charAt(0) === '-'; });
+    var prose = lines.filter(function (l) { return l.charAt(0) !== '-'; });
+    var html = '';
+    if (prose.length) html += '<p>' + prose.map(esc).join('<br>') + '</p>';
+    if (bullets.length) html += '<ul>' + bullets.map(function (b) { return '<li>' + esc(b.replace(/^-\s*/, '')) + '</li>'; }).join('') + '</ul>';
+    return html;
+  }
+  function renderDetails(details) {
+    if (!details || !details.length) return '';
+    var inner = details.map(function (d) {
+      var h = d.h || d.heading || '';
+      var b = d.b || d.body || '';
+      return '<div class="detail-block">' + (h ? '<h4>' + esc(h) + '</h4>' : '') + renderBody(b) + '</div>';
+    }).join('');
+    return '<details class="event-details"><summary>Programme details</summary>' + inner + '</details>';
+  }
+
   function renderEvent(ev) {
     state.event = ev;
     els.kick.textContent = ev.tag_line ? ev.tag_line : 'REGISTER';
@@ -349,6 +394,17 @@ footer a{color:#8FB79B}
     if (ev.location) chips.push('<span class="chip">📍 ' + esc(ev.location) + '</span>');
     chips.push('<span class="chip hot">Nafasi ni chache — register early</span>');
     els.meta.innerHTML = chips.join('');
+
+    var posterWrap = document.getElementById('ev-poster-wrap');
+    var poster = document.getElementById('ev-poster');
+    if (ev.image_url) {
+      poster.src = ev.image_url;
+      poster.alt = (ev.title || 'Programme') + ' poster';
+      posterWrap.style.display = 'block';
+    } else {
+      posterWrap.style.display = 'none';
+    }
+    document.getElementById('ev-details-wrap').innerHTML = renderDetails(ev.details);
 
     var courses = (ev.courses && ev.courses.length) ? ev.courses : FALLBACK_EVENT.courses;
     els.courseOpts.innerHTML = courses.map(function (c, i) {
@@ -512,7 +568,7 @@ footer a{color:#8FB79B}
       if (hasSupabase()) {
         state.client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        var q = state.client.from('janet_events').select('slug,title,tag_line,description,event_date,location,courses').eq('is_active', true);
+        var q = state.client.from('janet_events').select('*').eq('is_active', true);
         q = slug ? q.eq('slug', slug) : q.order('event_date', { ascending: true }).limit(1);
         var out = await q;
         if (out.error) throw out.error;

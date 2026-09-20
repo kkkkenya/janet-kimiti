@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Events &amp; Programs — Janet Wambui Kimiti | Mama Sukari</title>
-<meta name="description" content="Upcoming community programs and events from Janet Wambui Kimiti's campaign, Kahawa Sukari Ward.">
+<title>Programmes &amp; Events — Janet Wambui Kimiti | Mama Sukari</title>
+<meta name="description" content="Upcoming community programmes, skills training and events from Janet Wambui Kimiti's campaign, Kahawa Sukari Ward.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#F7F3E8;--ink:#0B0B0D;--green:#0C3B1E;--accent:#0E5C2B;--red:#C1272D;--mint:#7CFF9B}
+:root{--paper:#F7F3E8;--ink:#0B0B0D;--green:#0C3B1E;--accent:#0E5C2B;--red:#C1272D;--mint:#7CFF9B;--line:#E7E3D8;--muted:#6B6B6B}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.5}
 img{max-width:100%;display:block}
 .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.wrap-narrow{max-width:820px;margin:0 auto;padding:0 24px}
 .spine{height:6px;background:linear-gradient(90deg,#0B0B0D 0%,var(--red) 50%,var(--accent) 100%)}
 
 nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto}
@@ -24,63 +25,84 @@ nav .navlinks{display:flex;align-items:center;gap:18px}
 nav a.navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);text-decoration:none;font-weight:600}
 nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 16px;text-decoration:none;font-weight:600}
 
-.pagehead{background:#fff;padding:50px 0 40px;border-bottom:1px solid #eee}
+.pagehead{background:#fff;padding:46px 0 40px;border-bottom:1px solid var(--line)}
 .section-kick{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:600}
 .pagehead h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(30px,4.4vw,44px);color:var(--green);margin:10px 0 12px}
 .pagehead p{font-size:16px;color:#333;max-width:60ch}
+.pagehead .actions{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}
 
-.events{padding:50px 0 80px}
-.event-card{background:#fff;border:1px solid #eee;border-radius:8px;padding:32px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.events{padding:44px 0 30px}
+.event-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:30px;margin-bottom:28px;box-shadow:0 12px 30px rgba(0,0,0,.05)}
+.event-media{width:100%;max-height:420px;object-fit:cover;border-radius:8px;border:1px solid var(--line);margin-bottom:24px}
 .event-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:8px}
-.event-card h2{font-family:'Fraunces',serif;font-weight:700;font-size:26px;color:var(--green);margin:0 0 10px}
-.event-card p{font-size:15px;color:#444;max-width:56ch;margin-bottom:10px}
-.event-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#666;letter-spacing:.03em}
+.event-card h2{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(22px,3vw,30px);color:var(--green);margin:0 0 12px}
+.event-card .lede{font-size:15.5px;color:#444;max-width:62ch}
+.event-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#666;letter-spacing:.03em;margin-top:14px}
 .event-courses{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.pill{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;background:var(--paper);border:1px solid #ddd;color:var(--green);padding:5px 12px;border-radius:20px}
-.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;text-decoration:none;font-weight:600;cursor:pointer;border:none;white-space:nowrap;display:inline-block}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;background:var(--paper);border:1px solid #DDD9CB;color:var(--green);padding:5px 12px;border-radius:20px}
+
+.event-details{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}
+.event-details summary{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);cursor:pointer;font-weight:600;list-style:none}
+.event-details summary::-webkit-details-marker{display:none}
+.event-details summary::after{content:"＋";float:right;font-weight:700}
+.event-details[open] summary::after{content:"－"}
+.detail-block{margin-top:18px}
+.detail-block h4{font-family:'Fraunces',serif;font-size:16.5px;color:var(--green);margin-bottom:6px}
+.detail-block p{font-size:14.5px;color:#444;max-width:70ch}
+.detail-block ul{margin:6px 0 0 18px}
+.detail-block li{font-size:14.5px;color:#444;margin-bottom:5px}
+
+.event-cta{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;text-decoration:none;font-weight:600;cursor:pointer;border:none;white-space:nowrap;display:inline-block;border-radius:6px}
 .btn-primary{background:var(--red);color:#fff}
+.btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.event-cta .note{font-size:13px;color:var(--muted)}
 
 .state{padding:20px 0;color:#777;font-size:14px;font-family:'IBM Plex Mono',monospace}
-.more{padding:0 0 70px;text-align:center}
-.more p{color:#777;font-size:14px;max-width:50ch;margin:0 auto}
+.more{padding:10px 0 70px;text-align:center}
+.more p{color:#777;font-size:14px;max-width:52ch;margin:0 auto}
 
 footer{background:var(--ink);color:#999;padding:34px 0;text-align:center}
 footer .foot-brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#fff;margin-bottom:8px}
 footer p{font-size:11px;color:#666}
 
-@media (max-width:700px){
-  .event-card{grid-template-columns:1fr}
-  .btn{width:100%;text-align:center}
+@media (max-width:640px){
+  nav .navlinks .navlink:last-child{display:none}
+  .event-cta .btn{width:100%;text-align:center}
 }
 </style>
 </head>
 <body>
 <div class="spine"></div>
 <nav>
-  <a class="brand" href="index.html"><img src="images/DCP%20LOGO.png" alt="DCP" onerror="this.style.display='none'"><span>MAMA SUKARI</span></a>
+  <a class="brand" href="index.html"><img src="images/DCP%20LOGO.png" alt="DCP — Democratic Congress Party" onerror="this.style.display='none'"><span>MAMA SUKARI</span></a>
   <div class="navlinks">
+    <a class="navlink" href="register.html">Register</a>
     <a class="navlink" href="index.html#contract">The Contract</a>
-    <a class="cta" href="index.html#support">Support</a>
   </div>
+  <a class="cta" href="index.html#support">Support</a>
 </nav>
 
 <section class="pagehead">
   <div class="wrap">
-    <div class="section-kick">EVENTS &amp; PROGRAMS</div>
+    <div class="section-kick">PROGRAMMES &amp; EVENTS</div>
     <h1>Skills today. Opportunities tomorrow.</h1>
-    <p>Fully sponsored short courses and community programs for Kahawa Sukari Ward — open to youths, young mothers, and residents. Register below to reserve your spot.</p>
+    <p>Fully sponsored short courses and community programmes for Kahawa Sukari Ward — open to youths, young mothers and residents. Pick a programme below to register.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="register.html">Register for a programme</a>
+    </div>
   </div>
 </section>
 
 <section class="events">
-  <div class="wrap" id="events-wrap">
-    <div class="state">Loading events…</div>
+  <div class="wrap-narrow" id="events-wrap">
+    <div class="state">Loading programmes…</div>
   </div>
 </section>
 
 <section class="more">
   <div class="wrap">
-    <p>More community programs and events will be added here as they're announced. Questions? Call or WhatsApp <strong>0708 276 788</strong>.</p>
+    <p>More community programmes and events will be added here as they are announced. Questions? Call or WhatsApp <strong>0708 276 788</strong>.</p>
   </div>
 </section>
 
@@ -92,49 +114,85 @@ footer p{font-size:11px;color:#666}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-config.js"></script>
 <script>
-(async function () {
-  const wrap = document.getElementById('events-wrap');
-  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+(function () {
+  'use strict';
 
-  const { data, error } = await client
-    .from('janet_events')
-    .select('*')
-    .eq('is_active', true)
-    .order('event_date', { ascending: true });
-
-  if (error) {
-    wrap.innerHTML = '<div class="state">Couldn\u2019t load events right now. Call/WhatsApp 0708 276 788 to register directly.</div>';
-    console.error(error);
-    return;
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
   }
-  if (!data || data.length === 0) {
-    wrap.innerHTML = '<div class="state">No events open right now — check back soon.</div>';
-    return;
+  function fmtDate(d) {
+    if (!d) return '';
+    var dt = new Date(d + 'T00:00:00');
+    if (isNaN(dt)) return d;
+    return dt.toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' });
   }
-
-  wrap.innerHTML = data.map(function (ev) {
-    const dateStr = ev.event_date
-      ? new Date(ev.event_date + 'T00:00:00').toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' })
-      : '';
-    const courses = (ev.courses || []).map(function (c) {
-      return '<span class="pill">' + c + '</span>';
+  // "line" or "- bullet" per line
+  function renderBody(text) {
+    var lines = String(text || '').split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+    if (!lines.length) return '';
+    var bullets = lines.filter(function (l) { return l.charAt(0) === '-'; });
+    var prose = lines.filter(function (l) { return l.charAt(0) !== '-'; });
+    var html = '';
+    if (prose.length) html += '<p>' + prose.map(esc).join('<br>') + '</p>';
+    if (bullets.length) {
+      html += '<ul>' + bullets.map(function (b) { return '<li>' + esc(b.replace(/^-\s*/, '')) + '</li>'; }).join('') + '</ul>';
+    }
+    return html;
+  }
+  function renderDetails(details) {
+    if (!details || !details.length) return '';
+    var inner = details.map(function (d) {
+      var h = d.h || d.heading || '';
+      var b = d.b || d.body || '';
+      return '<div class="detail-block">' + (h ? '<h4>' + esc(h) + '</h4>' : '') + renderBody(b) + '</div>';
     }).join('');
-    return (
-      '<div class="event-card">' +
-        '<div>' +
-          (ev.tag_line ? '<div class="event-tag">' + ev.tag_line + '</div>' : '') +
-          '<h2>' + ev.title + '</h2>' +
-          (ev.description ? '<p>' + ev.description + '</p>' : '') +
-          '<div class="event-meta">' +
-            (dateStr ? '📅 ' + dateStr : '') +
-            (ev.location ? ' &nbsp;·&nbsp; 📍 ' + ev.location : '') +
-          '</div>' +
-          (courses ? '<div class="event-courses">' + courses + '</div>' : '') +
+    return '<details class="event-details"><summary>Programme details</summary>' + inner + '</details>';
+  }
+
+  (async function () {
+    var wrap = document.getElementById('events-wrap');
+
+    if (typeof window.supabase === 'undefined') {
+      wrap.innerHTML = '<div class="state">Couldn\u2019t reach the programme list. Call/WhatsApp 0708 276 788 to register directly.</div>';
+      return;
+    }
+    var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    var out = await client.from('janet_events').select('*').eq('is_active', true).order('event_date', { ascending: true });
+
+    if (out.error) {
+      wrap.innerHTML = '<div class="state">Couldn\u2019t load programmes right now. Call/WhatsApp 0708 276 788 to register directly.</div>';
+      console.error(out.error);
+      return;
+    }
+    var data = out.data || [];
+    if (!data.length) {
+      wrap.innerHTML = '<div class="state">No programmes open right now — check back soon.</div>';
+      return;
+    }
+
+    wrap.innerHTML = data.map(function (ev) {
+      var dateStr = ev.event_date ? fmtDate(ev.event_date) : '';
+      var courses = (ev.courses || []).map(function (c) { return '<span class="pill">' + esc(c) + '</span>'; }).join('');
+      return '<article class="event-card">' +
+        (ev.image_url ? '<img class="event-media" src="' + esc(ev.image_url) + '" alt="' + esc(ev.title || 'Programme') + ' poster">' : '') +
+        (ev.tag_line ? '<div class="event-tag">' + esc(ev.tag_line) + '</div>' : '') +
+        '<h2>' + esc(ev.title) + '</h2>' +
+        (ev.description ? '<p class="lede">' + esc(ev.description) + '</p>' : '') +
+        '<div class="event-meta">' +
+          (dateStr ? '📅 ' + esc(dateStr) : '') +
+          (ev.location ? ' &nbsp;·&nbsp; 📍 ' + esc(ev.location) : '') +
         '</div>' +
-        '<a class="btn btn-primary" href="register.html?event=' + encodeURIComponent(ev.slug) + '">Register Now</a>' +
-      '</div>'
-    );
-  }).join('');
+        (courses ? '<div class="event-courses">' + courses + '</div>' : '') +
+        renderDetails(ev.details) +
+        '<div class="event-cta">' +
+          '<a class="btn btn-primary" href="register.html?event=' + encodeURIComponent(ev.slug) + '">Register now</a>' +
+          '<span class="note">Fully sponsored · no fees</span>' +
+        '</div>' +
+      '</article>';
+    }).join('');
+  })();
 })();
 </script>
 </body>

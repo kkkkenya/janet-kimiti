@@ -24,9 +24,15 @@ create table if not exists public.janet_events (
   event_date      date,
   location        text,
   courses         text[] not null default '{}',
+  image_url       text,
+  details         jsonb not null default '[]'::jsonb,
   google_form_url text,
   is_active       boolean not null default true
 );
+
+-- For databases created before these columns existed:
+alter table public.janet_events add column if not exists image_url text;
+alter table public.janet_events add column if not exists details jsonb not null default '[]'::jsonb;
 
 create unique index if not exists janet_events_slug_key on public.janet_events (slug);
 

@@ -52,6 +52,13 @@ textarea{min-height:80px;resize:vertical}
 .checkbox-row input{width:auto}
 .checkbox-row label{margin:0;text-transform:none;letter-spacing:0;font-size:13px}
 
+.detail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap}
+.detail-head .lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:600}
+.detail-row{background:#FCFBF6;border:1px solid var(--line);border-radius:8px;padding:14px;margin-top:10px}
+.detail-row .dh{margin-bottom:8px}
+.detail-row .db{min-height:74px}
+.detail-row .del{margin-top:8px;color:var(--red);border-color:var(--red)}
+
 .event-row{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:16px}
 .event-row.inactive{opacity:.55}
 .event-row .info b{font-family:'Fraunces',serif;font-size:16px;color:var(--green);display:block;margin-bottom:3px}
@@ -158,6 +165,18 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
         </div>
         <label for="ev-courses">Course / category tags (comma-separated)</label>
         <input id="ev-courses" placeholder="☕ Coffee Barista, 🍽️ Hospitality, 🧁 Baking &amp; Pastry, 🥗 Nutrition">
+
+        <label for="ev-image">Poster / image URL</label>
+        <input id="ev-image" placeholder="images/new-dawn-poster.png  or  https://…">
+        <p class="hint" style="margin-top:6px">Upload the poster into the <code>images/</code> folder in the repository, then reference it as <code>images/your-file.png</code> — or paste any public image URL. It appears on the programme card and the registration page.</p>
+
+        <div class="detail-head">
+          <span class="lbl">Programme details (shown on the site)</span>
+          <button type="button" class="btn btn-ghost btn-sm" id="add-detail-btn">+ Add more details</button>
+        </div>
+        <p class="hint" style="margin-top:6px">Each block has a heading and text. Start a line with <code>-</code> to make a bullet point.</p>
+        <div id="details-editor"></div>
+
         <label for="ev-form">Google Form embed URL (optional — the built-in form is used by default)</label>
         <input id="ev-form" placeholder="Leave empty to use the built-in registration form">
         <div class="checkbox-row">
@@ -295,15 +314,42 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
       event_date: document.getElementById('ev-date').value || null,
       location: document.getElementById('ev-location').value.trim(),
       courses: document.getElementById('ev-courses').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
+      image_url: document.getElementById('ev-image').value.trim() || null,
+      details: collectDetails(),
       google_form_url: document.getElementById('ev-form').value.trim() || null,
       is_active: document.getElementById('ev-active').checked
     };
   }
+  function collectDetails() {
+    var rows = document.querySelectorAll('#details-editor .detail-row');
+    var out = [];
+    Array.prototype.forEach.call(rows, function (row) {
+      var h = row.querySelector('.dh').value.trim();
+      var b = row.querySelector('.db').value.trim();
+      if (h || b) out.push({ h: h, b: b });
+    });
+    return out;
+  }
+  function addDetailRow(h, b) {
+    var row = document.createElement('div');
+    row.className = 'detail-row';
+    row.innerHTML =
+      '<input class="dh" type="text" placeholder="Heading — e.g. What is included">' +
+      '<textarea class="db" placeholder="Details. Lines starting with - become bullet points."></textarea>' +
+      '<button type="button" class="btn btn-ghost btn-sm del">Remove</button>';
+    row.querySelector('.dh').value = h || '';
+    row.querySelector('.db').value = b || '';
+    row.querySelector('.del').addEventListener('click', function () { row.remove(); });
+    document.getElementById('details-editor').appendChild(row);
+  }
+  document.getElementById('add-detail-btn').addEventListener('click', function () { addDetailRow('', ''); });
+
   function clearEventForm() {
     document.getElementById('ev-id').value = '';
-    ['ev-slug', 'ev-title', 'ev-tag', 'ev-desc', 'ev-location', 'ev-courses', 'ev-form'].forEach(function (id) {
+    ['ev-slug', 'ev-title', 'ev-tag', 'ev-desc', 'ev-location', 'ev-courses', 'ev-form', 'ev-image'].forEach(function (id) {
       document.getElementById(id).value = '';
     });
+    document.getElementById('details-editor').innerHTML = '';
     document.getElementById('ev-date').value = '';
     document.getElementById('ev-active').checked = true;
     document.getElementById('form-title').textContent = 'Add New Event';
@@ -317,6 +363,7 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
     var payload = {
       slug: f.slug, title: f.title, tag_line: f.tag_line, description: f.description,
       event_date: f.event_date, location: f.location, courses: f.courses,
+      image_url: f.image_url, details: f.details,
       google_form_url: f.google_form_url, is_active: f.is_active
     };
     var out;
@@ -368,6 +415,11 @@ td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IB
         document.getElementById('ev-date').value = ev.event_date || '';
         document.getElementById('ev-location').value = ev.location || '';
         document.getElementById('ev-courses').value = (ev.courses || []).join(', ');
+        document.getElementById('ev-image').value = ev.image_url || '';
+        document.getElementById('details-editor').innerHTML = '';
+        (ev.details || []).forEach(function (d) {
+          addDetailRow(d.h || d.heading || '', d.b || d.body || '');
+        });
         document.getElementById('ev-form').value = ev.google_form_url || '';
         document.getElementById('ev-active').checked = !!ev.is_active;
         document.getElementById('form-title').textContent = 'Edit Event';
