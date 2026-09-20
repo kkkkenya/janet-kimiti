@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Janet Wambui Kimiti — Mama Sukari | MCA 2027, Kahawa Sukari Ward</title>
 <meta name="description" content="Janet Wambui Kimiti, DCP candidate for MCA, Kahawa Sukari Ward. Her 5-point contract for the ward.">
+<meta name="theme-color" content="#0C3B1E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,6 +13,19 @@
 :root{--paper:#F7F3E8;--ink:#0B0B0D;--green:#0C3B1E;--accent:#0E5C2B;--red:#C1272D;--mint:#7CFF9B}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.5}
+
+/* Mobile & accessibility */
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:hidden;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);-webkit-tap-highlight-color:transparent}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:640px){
+  nav{padding:12px 16px;gap:10px}
+  nav .navlinks{gap:12px}
+  nav a.navlink{padding:8px 2px}
+  .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
+  .wrap,.wrap-narrow{padding-left:18px;padding-right:18px}
+}
+@media (max-width:400px){ nav .brand span{display:none} }
 img{max-width:100%;display:block}
 .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
 .spine{height:6px;background:linear-gradient(90deg,#0B0B0D 0%,var(--red) 50%,var(--accent) 100%)}
@@ -81,11 +95,8 @@ nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1
 /* FOOTER */
 footer{background:var(--ink);color:#999;padding:34px 0;text-align:center}
 footer .foot-brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#fff;margin-bottom:8px}
-footer p{font-size:11px;color:#666}
+footer p{font-size:11px;color:#9A9A9A}
 
-@media (max-width:640px){
-  nav .navlinks .navlink:last-child{display:none}
-}
 @media (max-width:760px){
   .hero-inner{grid-template-columns:1fr;gap:28px}
   .hero-photo img{height:320px}
@@ -100,7 +111,6 @@ footer p{font-size:11px;color:#666}
 <nav>
   <div class="brand"><img src="images/DCP%20LOGO.png" alt="DCP" onerror="this.style.display='none'"><span>MAMA SUKARI</span></div>
   <div class="navlinks">
-    <a class="navlink" href="register.html">Register</a>
     <a class="navlink" href="events.html">Programmes</a>
   </div>
   <a class="cta" href="#support">Support</a>
@@ -114,7 +124,7 @@ footer p{font-size:11px;color:#666}
       <h1>Janet Wambui Kimiti</h1>
       <p class="hero-want">I want to be your MCA.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="register.html">Register for free training</a>
+        <a class="btn btn-primary" href="register.html">Register for one of our programmes</a>
         <a class="btn btn-ghost" href="#contract">Read the Contract</a>
         <a class="btn btn-ghost" href="#support">Support the Campaign</a>
       </div>
