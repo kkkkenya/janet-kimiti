@@ -8,18 +8,23 @@ No build step, no framework, no npm. Plain HTML + CSS + vanilla JS, with **Supab
 
 ## Pages
 
-| File | What it is |
-|---|---|
-| `events.html` | Programmes subpage — card grid with search and a detail sheet; past programmes are grouped below. With only one programme it switches to a rich full-width layout |
-| `register.html` | **Main registration page** — built-in form (Google-Form style) that writes to Supabase. Works standalone, per programme via `?event=slug`, and shows a programme chooser when several are open |
-| `index.html` | Home — hero, the 5-point contract, about, support (Till 5973293) |
-| `admin.html` | Admin: manage programmes (poster, details) **and** view/export registrations (login required) |
-| `supabase-config.js` | Public Supabase URL + publishable key |
-| `supabase/schema.sql` | Database schema + Row Level Security (run once) |
-| `supabase/seed.sql` | Seeds the "A New Dawn" October intake programme |
-| `supabase/seed-basketball.sql` | Adds the basketball tournament as a **draft** (hidden until you activate it) |
-| `supabase/update-new-dawn.sql` | Adds the campaign poster and the full programme details to that programme |
-| `images/` | DCP logo, Janet portrait, campaign photo, programme posters |
+| File | URL | What it is |
+|---|---|---|
+| `index.html` | `/` | Home — hero, the 5-point contract, about, support (Till 5973293) |
+| `programmes.html` | `/programmes` | Programmes — card grid with search and a detail sheet; past programmes grouped below. With only one programme it switches to a rich full-width layout |
+| `register.html` | `/register` | **Main registration page** — built-in form (Google-Form style) that writes to Supabase. Works standalone, per programme via `?event=slug`, and shows a programme chooser when several are open |
+| `admin.html` | `/admin` | Admin: manage programmes (poster, details) **and** view/export registrations (login required) |
+| `supabase-config.js` | — | Public Supabase URL + publishable key |
+| `supabase/schema.sql` | — | Database schema + Row Level Security (run once) |
+| `supabase/seed.sql` | — | Seeds the "A New Dawn" October intake programme |
+| `supabase/seed-basketball.sql` | — | Adds the basketball tournament as a **draft** (hidden until you activate it) |
+| `supabase/update-new-dawn.sql` | — | Adds the campaign poster and the full programme details to that programme |
+| `vercel.json` | — | Clean URLs (`/programmes`, `/register`, `/admin`), old-link redirects, security headers |
+| `images/` | `/images/…` | DCP logo, Janet portrait, campaign photo, programme posters |
+
+The admin lives at **https://janet-kimiti.vercel.app/admin** (`vercel.json` → `cleanUrls`). The page keeps `noindex` and is protected by the Supabase login — the registration data cannot be read without an account.
+
+Old links keep working: `/events` and `/events.html` redirect permanently to `/programmes`.
 
 ---
 
@@ -61,7 +66,18 @@ git commit -m "your message"
 git push
 ```
 
-Vercel deploys automatically. No build command needed — it is a static site; the output directory is the repository root.
+Vercel deploys automatically. No build command needed — it is a static site; the output directory is the repository root. `vercel.json` turns on clean URLs, so pages are served without `.html`:
+
+| Page | URL |
+|---|---|
+| Home | https://janet-kimiti.vercel.app/ |
+| Programmes | https://janet-kimiti.vercel.app/programmes |
+| Register | https://janet-kimiti.vercel.app/register |
+| Admin | https://janet-kimiti.vercel.app/admin |
+
+The same file redirects the old `/events` and `/events.html` links to `/programmes`, and adds `noindex` plus basic security headers.
+
+> Moving off Vercel later? Clean URLs then need the same rewrite rules on the new host, or a folder-per-page layout (`programmes/index.html`).
 
 ---
 
@@ -80,9 +96,9 @@ Adding a programme is always just `admin.html` → save. Nothing else needs chan
 
 ## Navigation
 
-All public pages (`index.html`, `events.html`, `register.html`) share **one navigation bar**: the brand, then **Programmes** and **The Contract**, then the **Support** button. On phones the second link collapses so Programmes is always visible.
+All public pages (`/`, `/programmes`, `/register`) share **one navigation bar**: the brand, then **Programmes** and **The Contract**, then the **Support** button. On phones the second link collapses so Programmes is always visible.
 
-Every generic link labelled *Register* or *Programmes* — in the nav, the hero, the band and the page headings — opens the **Programmes tab** (`events.html`). Registration is then reached from a specific programme: each programme card and detail sheet has its own **Register** button that opens `register.html?event=<slug>`. So the flow is always: choose a programme → register for it.
+Every generic link labelled *Register* or *Programmes* — in the nav, the hero, the band and the page headings — opens the **Programmes tab**. Registration is then reached from a specific programme: each programme card and detail sheet has its own **Register** button that opens `/register?event=<slug>`. So the flow is always: choose a programme → register for it.
 
 ## Editing content
 
