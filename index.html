@@ -22,6 +22,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   nav{padding:12px 16px;gap:10px}
   nav .navlinks{gap:12px}
   nav a.navlink{padding:8px 2px}
+  nav .navlinks .navlink:last-child{display:none}
   .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
   .wrap,.wrap-narrow{padding-left:18px;padding-right:18px}
 }
@@ -32,7 +33,7 @@ img{max-width:100%;display:block}
 
 /* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto}
-nav .brand{display:flex;align-items:center;gap:10px}
+nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 nav .brand img{height:30px}
 nav .brand span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--green)}
 nav .navlinks{display:flex;align-items:center;gap:18px}
@@ -109,9 +110,10 @@ footer p{font-size:11px;color:#9A9A9A}
 <body>
 <div class="spine"></div>
 <nav>
-  <div class="brand"><img src="images/DCP%20LOGO.png" alt="DCP" onerror="this.style.display='none'"><span>MAMA SUKARI</span></div>
+  <a class="brand" href="index.html" aria-current="page"><img src="images/DCP%20LOGO.png" alt="DCP" onerror="this.style.display='none'"><span>MAMA SUKARI</span></a>
   <div class="navlinks">
     <a class="navlink" href="events.html">Programmes</a>
+    <a class="navlink" href="#contract">The Contract</a>
   </div>
   <a class="cta" href="#support">Support</a>
 </nav>
@@ -124,7 +126,7 @@ footer p{font-size:11px;color:#9A9A9A}
       <h1>Janet Wambui Kimiti</h1>
       <p class="hero-want">I want to be your MCA.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="register.html">Register for one of our programmes</a>
+        <a class="btn btn-primary" href="events.html">Register for one of our programmes</a>
         <a class="btn btn-ghost" href="#contract">Read the Contract</a>
         <a class="btn btn-ghost" href="#support">Support the Campaign</a>
       </div>
@@ -234,9 +236,7 @@ footer p{font-size:11px;color:#9A9A9A}
         ? (one.description || 'Free skills training for Kahawa Sukari Ward.')
         : rows.slice(0, 3).map(function (ev) { return esc(ev.title) + (ev.event_date ? ' (from ' + esc(fmt(ev.event_date)) + ')' : ''); }).join(' · ');
       var primary = '<a class="btn btn-primary" href="events.html">See all programmes</a>';
-      var secondary = rows.length === 1
-        ? '<a class="btn btn-ghost" href="register.html?event=' + encodeURIComponent(one.slug) + '" style="background:transparent;color:#fff;border-color:#fff">Register for this programme</a>'
-        : '';
+      var secondary = '';
 
       inner.innerHTML =
         '<div>' +

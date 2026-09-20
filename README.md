@@ -17,6 +17,7 @@ No build step, no framework, no npm. Plain HTML + CSS + vanilla JS, with **Supab
 | `supabase-config.js` | Public Supabase URL + publishable key |
 | `supabase/schema.sql` | Database schema + Row Level Security (run once) |
 | `supabase/seed.sql` | Seeds the "A New Dawn" October intake programme |
+| `supabase/seed-basketball.sql` | Adds the basketball tournament as a **draft** (hidden until you activate it) |
 | `supabase/update-new-dawn.sql` | Adds the campaign poster and the full programme details to that programme |
 | `images/` | DCP logo, Janet portrait, campaign photo, programme posters |
 
@@ -29,8 +30,9 @@ No build step, no framework, no npm. Plain HTML + CSS + vanilla JS, with **Supab
    - the public can **read active events** and **submit registrations** — nothing else;
    - signed-in admins can read, edit and delete everything.
 3. Run **`supabase/seed.sql`** to add the "A New Dawn" intake (or add programmes by hand in `admin.html`).
-4. Run **`supabase/update-new-dawn.sql`** to attach the campaign poster image and the full programme details (what you'll learn, what's included, what to bring, venue, deadline).
-5. **Create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
+4. Run **`supabase/seed-basketball.sql`** if you want the basketball tournament — it is inserted as a **draft** (`is_active = false`), so it stays hidden until you press *Activate* on it in `admin.html`.
+5. Run **`supabase/update-new-dawn.sql`** to attach the campaign poster image and the full programme details (what you'll learn, what's included, what to bring, venue, deadline).
+6. **Create an admin login:** Authentication → Users → **Add user** (email + password). Use that login on `admin.html`. There is no public sign-up — only users you create can log in.
 
 > ⚠️ Never put a `service_role` / secret key in this repo. `supabase-config.js` holds only the **publishable** key, which is safe in a browser and in a public repo because Row Level Security decides what it can do.
 
@@ -75,6 +77,12 @@ The site is built to handle a growing programme list without a redesign:
 | `register.html` | Straight to the form for that programme | Adds a **“Which programme are you registering for?”** chooser at the top; switching it updates the form, poster and details |
 
 Adding a programme is always just `admin.html` → save. Nothing else needs changing.
+
+## Navigation
+
+All public pages (`index.html`, `events.html`, `register.html`) share **one navigation bar**: the brand, then **Programmes** and **The Contract**, then the **Support** button. On phones the second link collapses so Programmes is always visible.
+
+Every generic link labelled *Register* or *Programmes* — in the nav, the hero, the band and the page headings — opens the **Programmes tab** (`events.html`). Registration is then reached from a specific programme: each programme card and detail sheet has its own **Register** button that opens `register.html?event=<slug>`. So the flow is always: choose a programme → register for it.
 
 ## Editing content
 

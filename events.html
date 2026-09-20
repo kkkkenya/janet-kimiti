@@ -119,6 +119,7 @@ footer p{font-size:11px;color:#9A9A9A}
   nav{padding:12px 16px;gap:10px}
   nav .navlinks{gap:12px}
   nav a.navlink{padding:8px 2px}
+  nav .navlinks .navlink:last-child{display:none}
   .wrap{padding-left:18px;padding-right:18px}
   .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
   .pgrid{grid-template-columns:1fr;gap:18px}
@@ -135,7 +136,7 @@ footer p{font-size:11px;color:#9A9A9A}
 <nav>
   <a class="brand" href="index.html"><img src="images/DCP%20LOGO.png" alt="DCP — Democratic Congress Party" onerror="this.style.display='none'"><span>MAMA SUKARI</span></a>
   <div class="navlinks">
-    <a class="navlink" href="register.html">Register</a>
+    <a class="navlink" href="events.html" aria-current="page">Programmes</a>
     <a class="navlink" href="index.html#contract">The Contract</a>
   </div>
   <a class="cta" href="index.html#support">Support</a>
@@ -147,13 +148,13 @@ footer p{font-size:11px;color:#9A9A9A}
     <h1>Skills today. Opportunities tomorrow.</h1>
     <p>Fully sponsored short courses and community programmes for Kahawa Sukari Ward — open to youths, young mothers and residents.</p>
     <div class="actions">
-      <a class="btn btn-primary" href="register.html">Register for a programme</a>
+      <a class="btn btn-primary" href="#programmes">View programmes</a>
       <span class="count" id="head-count"></span>
     </div>
   </div>
 </section>
 
-<main class="list">
+<main class="list" id="programmes">
   <div class="wrap">
     <div class="toolbar" id="toolbar" hidden>
       <input type="search" id="q" placeholder="Search programmes — course, title or keyword…" aria-label="Search programmes">
