@@ -21,6 +21,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:16px 2
 nav .brand{display:flex;align-items:center;gap:10px}
 nav .brand img{height:30px}
 nav .brand span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--green)}
+nav .navlinks{display:flex;align-items:center;gap:18px}
+nav a.navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);text-decoration:none;font-weight:600}
 nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 16px;text-decoration:none;font-weight:600}
 
 /* HERO */
@@ -36,6 +38,13 @@ nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1
 .btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
 .hero-photo{position:relative;z-index:2}
 .hero-photo img{border-radius:6px;width:100%;height:420px;object-fit:cover;object-position:40% 20%;box-shadow:0 30px 60px rgba(0,0,0,.18)}
+
+/* PROGRAMMES BAND */
+.bandcta{background:var(--green);color:#fff;padding:26px 0}
+.bandcta .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.bandcta-k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--mint);font-weight:600}
+.bandcta h3{font-family:'Fraunces',serif;font-size:clamp(20px,2.6vw,26px);margin:6px 0;font-weight:700}
+.bandcta p{font-size:14px;color:#CFE3D3;max-width:62ch}
 
 /* DREAM */
 .dream{background:var(--paper);padding:70px 0}
@@ -74,6 +83,9 @@ footer{background:var(--ink);color:#999;padding:34px 0;text-align:center}
 footer .foot-brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#fff;margin-bottom:8px}
 footer p{font-size:11px;color:#666}
 
+@media (max-width:640px){
+  nav .navlinks .navlink:first-child{display:none}
+}
 @media (max-width:760px){
   .hero-inner{grid-template-columns:1fr;gap:28px}
   .hero-photo img{height:320px}
@@ -87,6 +99,10 @@ footer p{font-size:11px;color:#666}
 <div class="spine"></div>
 <nav>
   <div class="brand"><img src="images/DCP%20LOGO.png" alt="DCP" onerror="this.style.display='none'"><span>MAMA SUKARI</span></div>
+  <div class="navlinks">
+    <a class="navlink" href="events.html">Programmes</a>
+    <a class="navlink" href="register.html">Register</a>
+  </div>
   <a class="cta" href="#support">Support</a>
 </nav>
 
@@ -100,9 +116,21 @@ footer p{font-size:11px;color:#666}
       <div class="hero-actions">
         <a class="btn btn-primary" href="#contract">Read the Contract</a>
         <a class="btn btn-ghost" href="#support">Support the Campaign</a>
+        <a class="btn btn-ghost" href="register.html">Free Skills Training →</a>
       </div>
     </div>
     <div class="hero-photo"><img src="images/janet%20headshgot.png" alt="Janet Wambui Kimiti"></div>
+  </div>
+</section>
+
+<section class="bandcta">
+  <div class="wrap">
+    <div>
+      <div class="bandcta-k">A NEW DAWN • OCTOBER INTAKE</div>
+      <h3>Free skills training — 100% sponsored</h3>
+      <p>Coffee Barista · Hospitality · Baking &amp; Pastry · Nutrition. Open to all youths, young mothers and residents of Kahawa Sukari Ward. Classes start 5th October — nafasi ni chache.</p>
+    </div>
+    <a class="btn btn-primary" href="register.html">Enrol now</a>
   </div>
 </section>
 

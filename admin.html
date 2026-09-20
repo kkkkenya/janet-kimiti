@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Events &amp; Registrations | Janet Wambui Kimiti</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F7F3E8;--ink:#0B0B0D;--green:#0C3B1E;--accent:#0E5C2B;--red:#C1272D;--mint:#7CFF9B;--line:#E7E3D8;--muted:#6B6B6B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.spine{height:6px;background:linear-gradient(90deg,#0B0B0D 0%,var(--red) 50%,var(--accent) 100%)}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto}
+nav .brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--green);text-decoration:none}
+nav .navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);text-decoration:none;font-weight:600}
+#logout-btn{display:none;background:none;border:none;cursor:pointer;font:inherit;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:600}
+
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--green);margin:34px 0 6px}
+.sub{color:#666;font-size:14px;margin-bottom:24px}
+
+/* Login */
+#login-view{background:#fff;border:1px solid var(--line);border-radius:8px;padding:32px;margin-top:40px;max-width:560px}
+label{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin:16px 0 6px}
+label:first-child{margin-top:0}
+input, textarea, select{width:100%;padding:11px 12px;border:1px solid #D9D5C9;border-radius:6px;font-family:'Inter',sans-serif;font-size:14px;background:#fff}
+textarea{min-height:80px;resize:vertical}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:13px 24px;border-radius:6px;border:none;font-weight:600;cursor:pointer}
+.btn-primary{background:var(--red);color:#fff}
+.btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.btn-sm{padding:9px 16px;font-size:11px}
+.btn-row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.err{color:var(--red);font-size:13px;margin-top:12px;font-family:'IBM Plex Mono',monospace}
+.hint{font-size:12.5px;color:#888;margin-top:18px;line-height:1.5}
+
+/* Tabs */
+#app-view{display:none;margin-top:26px}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.tab{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:2.5px solid transparent;padding:12px 14px;cursor:pointer}
+.tab.on{color:var(--green);border-bottom-color:var(--accent)}
+.panel{display:none}
+.panel.on{display:block}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px;margin-bottom:20px}
+.card h2{font-family:'Fraunces',serif;font-size:18px;color:var(--green);margin-bottom:16px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.checkbox-row{display:flex;align-items:center;gap:8px;margin-top:16px}
+.checkbox-row input{width:auto}
+.checkbox-row label{margin:0;text-transform:none;letter-spacing:0;font-size:13px}
+
+.event-row{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.event-row.inactive{opacity:.55}
+.event-row .info b{font-family:'Fraunces',serif;font-size:16px;color:var(--green);display:block;margin-bottom:3px}
+.event-row .info span{font-size:12px;color:#777;font-family:'IBM Plex Mono',monospace}
+.event-row .actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+.event-row .actions button{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:8px 12px;border-radius:5px;border:1px solid #ccc;background:#fff;cursor:pointer}
+.event-row .actions button.danger{color:var(--red);border-color:var(--red)}
+
+.msg{font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:10px 14px;border-radius:6px;margin-bottom:16px}
+.msg.ok{background:#E8F7EC;color:var(--accent)}
+.msg.err{background:#FCEBEC;color:var(--red)}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 18px}
+.stat .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--green);line-height:1.1;margin-top:6px}
+.stat .s{font-size:11.5px;color:#888;margin-top:2px}
+
+/* Toolbar */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar select,.toolbar input{width:auto;min-width:150px}
+.toolbar .grow{flex:1;min-width:180px}
+
+/* Table */
+.table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);background:#FCFBF6;white-space:nowrap}
+td{padding:13px 14px;border-bottom:1px solid #F2EFE6;font-size:13.5px;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td .nm{font-weight:600}
+td .muted{color:#888;font-size:12px}
+td a.wa{color:var(--accent);font-weight:600;text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:12.5px}
+.status-select{font-size:12px;padding:6px 8px;border-radius:5px;border:1px solid #D9D5C9;font-family:'IBM Plex Mono',monospace;width:auto}
+.pill-s{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:20px;background:var(--paper);border:1px solid var(--line);color:var(--green);white-space:nowrap}
+
+@media (max-width:760px){
+  .stats{grid-template-columns:1fr 1fr}
+  .row2{grid-template-columns:1fr}
+  .event-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="spine"></div>
+<nav>
+  <a class="brand" href="index.html">MAMA SUKARI · ADMIN</a>
+  <div style="display:flex;gap:16px;align-items:center">
+    <a class="navlink" href="events.html" target="_blank" rel="noopener">View site ↗</a>
+    <button id="logout-btn">Log out</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="login-view">
+    <h1>Admin login</h1>
+    <p class="sub">Manage events and see who has registered.</p>
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="username">
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="login-btn">Log In</button>
+    </div>
+    <div class="err" id="login-err"></div>
+    <p class="hint">No login yet? Create one in the Supabase dashboard → Authentication → Users → Add User, using the project at <code>vhecbmrrtkscwhgbmqcz.supabase.co</code>. Anyone you create a login for can manage events and registrations here.</p>
+  </div>
+
+  <!-- APP -->
+  <div id="app-view">
+    <h1>Campaign admin</h1>
+    <p class="sub">Events and registrations. Changes go live on the site immediately.</p>
+    <div id="msg-area"></div>
+
+    <div class="tabs">
+      <button class="tab on" data-tab="events">Events</button>
+      <button class="tab" data-tab="regs">Registrations</button>
+    </div>
+
+    <!-- EVENTS PANEL -->
+    <div class="panel on" id="panel-events">
+      <div class="card">
+        <h2 id="form-title">Add New Event</h2>
+        <input type="hidden" id="ev-id">
+        <label for="ev-slug">URL slug (letters, numbers, dashes only — e.g. <code>new-dawn</code>)</label>
+        <input id="ev-slug" placeholder="new-dawn">
+        <label for="ev-title">Title</label>
+        <input id="ev-title" placeholder="A New Dawn: Free Skills Training">
+        <label for="ev-tag">Tag line</label>
+        <input id="ev-tag" placeholder="100% Fully Sponsored — October Intake">
+        <label for="ev-desc">Description</label>
+        <textarea id="ev-desc" placeholder="Short description shown on the event card and registration page"></textarea>
+        <div class="row2">
+          <div>
+            <label for="ev-date">Event / start date</label>
+            <input id="ev-date" type="date">
+          </div>
+          <div>
+            <label for="ev-location">Location</label>
+            <input id="ev-location" placeholder="Kahawa Sukari Ward">
+          </div>
+        </div>
+        <label for="ev-courses">Course / category tags (comma-separated)</label>
+        <input id="ev-courses" placeholder="☕ Coffee Barista, 🍽️ Hospitality, 🧁 Baking &amp; Pastry, 🥗 Nutrition">
+        <label for="ev-form">Google Form embed URL (optional — the built-in form is used by default)</label>
+        <input id="ev-form" placeholder="Leave empty to use the built-in registration form">
+        <div class="checkbox-row">
+          <input type="checkbox" id="ev-active" checked>
+          <label for="ev-active">Active (visible on the site)</label>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="save-btn">Save Event</button>
+          <button class="btn btn-ghost" id="cancel-btn" style="display:none">Cancel Edit</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>All Events</h2>
+        <div id="events-list"><p class="sub">Loading…</p></div>
+      </div>
+    </div>
+
+    <!-- REGISTRATIONS PANEL -->
+    <div class="panel" id="panel-regs">
+      <div class="stats" id="stats">
+        <div class="stat"><div class="k">Total</div><div class="v" id="st-total">—</div><div class="s">all time</div></div>
+        <div class="stat"><div class="k">New</div><div class="v" id="st-new">—</div><div class="s">not yet contacted</div></div>
+        <div class="stat"><div class="k">Contacted</div><div class="v" id="st-contacted">—</div><div class="s">followed up</div></div>
+        <div class="stat"><div class="k">Enrolled</div><div class="v" id="st-enrolled">—</div><div class="s">placed in a class</div></div>
+      </div>
+
+      <div class="card">
+        <h2>Registrations</h2>
+        <div class="toolbar">
+          <select id="f-event"><option value="">All programmes</option></select>
+          <select id="f-status">
+            <option value="">All statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="enrolled">Enrolled</option>
+            <option value="declined">Declined</option>
+          </select>
+          <input class="grow" id="f-search" type="text" placeholder="Search name, phone or estate…">
+          <button class="btn btn-ghost btn-sm" id="refresh-btn">Refresh</button>
+          <button class="btn btn-primary btn-sm" id="csv-btn">Export CSV</button>
+        </div>
+        <div id="regs-body"><p class="sub">Loading…</p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+(function () {
+  'use strict';
+  if (typeof window.supabase === 'undefined') {
+    document.getElementById('login-err').textContent = 'Could not load the Supabase library — check your connection.';
+    return;
+  }
+  var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  var loginView = document.getElementById('login-view');
+  var appView = document.getElementById('app-view');
+  var logoutBtn = document.getElementById('logout-btn');
+  var msgArea = document.getElementById('msg-area');
+
+  var allRegs = [];
+  var allEvents = [];
+
+  function showMsg(text, ok) {
+    msgArea.innerHTML = '<div class="msg ' + (ok ? 'ok' : 'err') + '">' + text + '</div>';
+    setTimeout(function () { msgArea.innerHTML = ''; }, 4500);
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmtWhen(ts) {
+    if (!ts) return '';
+    var d = new Date(ts);
+    return d.toLocaleDateString('en-KE', { day: 'numeric', month: 'short' }) + ' · ' +
+           d.toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  /* ---------- Auth ---------- */
+  document.getElementById('login-btn').addEventListener('click', async function () {
+    var email = document.getElementById('email').value.trim();
+    var password = document.getElementById('password').value;
+    var errEl = document.getElementById('login-err');
+    errEl.textContent = '';
+    var res = await client.auth.signInWithPassword({ email: email, password: password });
+    if (res.error) { errEl.textContent = res.error.message; return; }
+    enterApp();
+  });
+  document.getElementById('password').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('login-btn').click();
+  });
+  logoutBtn.addEventListener('click', async function () {
+    await client.auth.signOut();
+    location.reload();
+  });
+
+  async function enterApp() {
+    loginView.style.display = 'none';
+    appView.style.display = 'block';
+    logoutBtn.style.display = 'inline';
+    await loadEvents();
+    await loadRegistrations();
+  }
+
+  (async function init() {
+    var s = await client.auth.getSession();
+    if (s.data && s.data.session) enterApp();
+  })();
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll('.tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('on'); });
+      document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('on'); });
+      tab.classList.add('on');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('on');
+      if (tab.dataset.tab === 'regs') loadRegistrations();
+    });
+  });
+
+  /* ---------- Events CRUD ---------- */
+  function getForm() {
+    return {
+      id: document.getElementById('ev-id').value || null,
+      slug: document.getElementById('ev-slug').value.trim(),
+      title: document.getElementById('ev-title').value.trim(),
+      tag_line: document.getElementById('ev-tag').value.trim(),
+      description: document.getElementById('ev-desc').value.trim(),
+      event_date: document.getElementById('ev-date').value || null,
+      location: document.getElementById('ev-location').value.trim(),
+      courses: document.getElementById('ev-courses').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean),
+      google_form_url: document.getElementById('ev-form').value.trim() || null,
+      is_active: document.getElementById('ev-active').checked
+    };
+  }
+  function clearEventForm() {
+    document.getElementById('ev-id').value = '';
+    ['ev-slug', 'ev-title', 'ev-tag', 'ev-desc', 'ev-location', 'ev-courses', 'ev-form'].forEach(function (id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('ev-date').value = '';
+    document.getElementById('ev-active').checked = true;
+    document.getElementById('form-title').textContent = 'Add New Event';
+    document.getElementById('cancel-btn').style.display = 'none';
+  }
+  document.getElementById('cancel-btn').addEventListener('click', clearEventForm);
+
+  document.getElementById('save-btn').addEventListener('click', async function () {
+    var f = getForm();
+    if (!f.slug || !f.title) { showMsg('Slug and title are required.', false); return; }
+    var payload = {
+      slug: f.slug, title: f.title, tag_line: f.tag_line, description: f.description,
+      event_date: f.event_date, location: f.location, courses: f.courses,
+      google_form_url: f.google_form_url, is_active: f.is_active
+    };
+    var out;
+    if (f.id) { out = await client.from('janet_events').update(payload).eq('id', f.id); }
+    else { out = await client.from('janet_events').insert(payload); }
+    if (out.error) { showMsg('Error: ' + out.error.message, false); return; }
+    showMsg(f.id ? 'Event updated.' : 'Event added.', true);
+    clearEventForm();
+    await loadEvents();
+  });
+
+  async function loadEvents() {
+    var listEl = document.getElementById('events-list');
+    var out = await client.from('janet_events').select('*').order('created_at', { ascending: false });
+    if (out.error) { listEl.innerHTML = '<p class="sub">Couldn\u2019t load events: ' + esc(out.error.message) + '</p>'; return; }
+    allEvents = out.data || [];
+
+    // filter dropdown for registrations
+    var fEvent = document.getElementById('f-event');
+    var current = fEvent.value;
+    fEvent.innerHTML = '<option value="">All programmes</option>' +
+      allEvents.map(function (e) { return '<option value="' + esc(e.slug) + '">' + esc(e.title) + '</option>'; }).join('');
+    fEvent.value = current;
+
+    if (!allEvents.length) { listEl.innerHTML = '<p class="sub">No events yet.</p>'; return; }
+
+    listEl.innerHTML = allEvents.map(function (ev) {
+      return '<div class="event-row' + (ev.is_active ? '' : ' inactive') + '">' +
+        '<div class="info"><b>' + esc(ev.title) + '</b><span>/' + esc(ev.slug) +
+          (ev.event_date ? ' · ' + esc(ev.event_date) : '') + (ev.is_active ? '' : ' · inactive') + '</span></div>' +
+        '<div class="actions">' +
+          '<button data-edit="' + ev.id + '">Edit</button>' +
+          '<button data-toggle="' + ev.id + '" data-state="' + ev.is_active + '">' + (ev.is_active ? 'Deactivate' : 'Activate') + '</button>' +
+          '<button data-copy="' + esc(ev.slug) + '">Copy link</button>' +
+          '<button class="danger" data-delete="' + ev.id + '">Delete</button>' +
+        '</div></div>';
+    }).join('');
+
+    listEl.querySelectorAll('[data-edit]').forEach(function (btn) {
+      btn.addEventListener('click', async function () {
+        var out2 = await client.from('janet_events').select('*').eq('id', btn.dataset.edit).single();
+        var ev = out2.data;
+        if (!ev) return;
+        document.getElementById('ev-id').value = ev.id;
+        document.getElementById('ev-slug').value = ev.slug || '';
+        document.getElementById('ev-title').value = ev.title || '';
+        document.getElementById('ev-tag').value = ev.tag_line || '';
+        document.getElementById('ev-desc').value = ev.description || '';
+        document.getElementById('ev-date').value = ev.event_date || '';
+        document.getElementById('ev-location').value = ev.location || '';
+        document.getElementById('ev-courses').value = (ev.courses || []).join(', ');
+        document.getElementById('ev-form').value = ev.google_form_url || '';
+        document.getElementById('ev-active').checked = !!ev.is_active;
+        document.getElementById('form-title').textContent = 'Edit Event';
+        document.getElementById('cancel-btn').style.display = 'inline-block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+    listEl.querySelectorAll('[data-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', async function () {
+        var nowActive = btn.dataset.state !== 'true';
+        var out2 = await client.from('janet_events').update({ is_active: nowActive }).eq('id', btn.dataset.toggle);
+        if (out2.error) { showMsg('Error: ' + out2.error.message, false); return; }
+        await loadEvents();
+      });
+    });
+    listEl.querySelectorAll('[data-copy]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var url = new URL('register.html?event=' + encodeURIComponent(btn.dataset.copy), location.href).href;
+        navigator.clipboard.writeText(url).then(function () { showMsg('Registration link copied.', true); });
+      });
+    });
+    listEl.querySelectorAll('[data-delete]').forEach(function (btn) {
+      btn.addEventListener('click', async function () {
+        if (!confirm('Delete this event permanently? This cannot be undone.')) return;
+        var out2 = await client.from('janet_events').delete().eq('id', btn.dataset.delete);
+        if (out2.error) { showMsg('Error: ' + out2.error.message, false); return; }
+        showMsg('Event deleted.', true);
+        await loadEvents();
+      });
+    });
+  }
+
+  /* ---------- Registrations ---------- */
+  async function loadRegistrations() {
+    var body = document.getElementById('regs-body');
+    body.innerHTML = '<p class="sub">Loading…</p>';
+    var out = await client.from('janet_registrations').select('*').order('created_at', { ascending: false });
+    if (out.error) {
+      body.innerHTML = '<p class="sub">Couldn\u2019t load registrations: ' + esc(out.error.message) +
+        '<br><br>If this says the table is missing, run <code>supabase/schema.sql</code> in the Supabase SQL editor first.</p>';
+      return;
+    }
+    allRegs = out.data || [];
+    renderStats();
+    renderRegs();
+  }
+
+  function renderStats() {
+    var total = allRegs.length;
+    var by = function (s) { return allRegs.filter(function (r) { return (r.status || 'new') === s; }).length; };
+    document.getElementById('st-total').textContent = total;
+    document.getElementById('st-new').textContent = by('new');
+    document.getElementById('st-contacted').textContent = by('contacted');
+    document.getElementById('st-enrolled').textContent = by('enrolled');
+  }
+
+  function filtered() {
+    var ev = document.getElementById('f-event').value;
+    var st = document.getElementById('f-status').value;
+    var q = document.getElementById('f-search').value.trim().toLowerCase();
+    return allRegs.filter(function (r) {
+      if (ev && r.event_slug !== ev) return false;
+      if (st && (r.status || 'new') !== st) return false;
+      if (q) {
+        var hay = [r.full_name, r.phone, r.whatsapp, r.estate, r.primary_course, r.applicant_type]
+          .map(function (x) { return String(x || '').toLowerCase(); }).join(' ');
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+  }
+
+  function renderRegs() {
+    var body = document.getElementById('regs-body');
+    var rows = filtered();
+    if (!rows.length) {
+      body.innerHTML = '<p class="sub">' + (allRegs.length ? 'No registrations match these filters.' : 'No registrations yet — they will appear here as soon as someone submits the form.') + '</p>';
+      return;
+    }
+    body.innerHTML =
+      '<div class="table-scroll"><table><thead><tr>' +
+      '<th>Name</th><th>Phone</th><th>Course</th><th>Registered as</th><th>Estate</th><th>Programme</th><th>Received</th><th>Status</th>' +
+      '</tr></thead><tbody>' +
+      rows.map(function (r) {
+        var wa = String(r.whatsapp || r.phone || '').replace(/[\s\-()]/g, '');
+        if (wa.indexOf('0') === 0) wa = '254' + wa.slice(1);
+        wa = wa.replace(/^\+/, '');
+        var notes = r.notes ? '<div class="muted">“' + esc(r.notes) + '”</div>' : '';
+        return '<tr>' +
+          '<td><span class="nm">' + esc(r.full_name) + '</span>' + notes +
+            (r.age_group ? '<div class="muted">Age ' + esc(r.age_group) + '</div>' : '') + '</td>' +
+          '<td><a class="wa" href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">' + esc(r.phone) + '</a>' +
+            (r.whatsapp && r.whatsapp !== r.phone ? '<div class="muted">WA ' + esc(r.whatsapp) + '</div>' : '') + '</td>' +
+          '<td>' + esc(r.primary_course) + (r.second_course ? '<div class="muted">2nd: ' + esc(r.second_course) + '</div>' : '') + '</td>' +
+          '<td>' + esc(r.applicant_type) + '</td>' +
+          '<td>' + esc(r.estate || '—') + '</td>' +
+          '<td><span class="pill-s">' + esc(r.event_title || r.event_slug || '—') + '</span></td>' +
+          '<td class="muted">' + esc(fmtWhen(r.created_at)) + '</td>' +
+          '<td><select class="status-select" data-id="' + r.id + '">' +
+            ['new', 'contacted', 'enrolled', 'declined'].map(function (s) {
+              return '<option value="' + s + '"' + ((r.status || 'new') === s ? ' selected' : '') + '>' + s + '</option>';
+            }).join('') +
+          '</select></td>' +
+        '</tr>';
+      }).join('') +
+      '</tbody></table></div>' +
+      '<p class="sub" style="margin-top:12px">Showing ' + rows.length + ' of ' + allRegs.length + ' registrations.</p>';
+
+    body.querySelectorAll('.status-select').forEach(function (sel) {
+      sel.addEventListener('change', async function () {
+        var out = await client.from('janet_registrations').update({ status: sel.value }).eq('id', sel.dataset.id);
+        if (out.error) { showMsg('Could not update status: ' + out.error.message, false); return; }
+        var rec = allRegs.filter(function (r) { return r.id === sel.dataset.id; })[0];
+        if (rec) rec.status = sel.value;
+        renderStats();
+        showMsg('Status updated.', true);
+      });
+    });
+  }
+
+  ['f-event', 'f-status', 'f-search'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', renderRegs);
+  });
+  document.getElementById('refresh-btn').addEventListener('click', loadRegistrations);
+
+  document.getElementById('csv-btn').addEventListener('click', function () {
+    var rows = filtered();
+    if (!rows.length) { showMsg('Nothing to export.', false); return; }
+    var cols = ['created_at', 'event_title', 'full_name', 'phone', 'whatsapp', 'age_group', 'applicant_type', 'estate', 'primary_course', 'second_course', 'notes', 'status'];
+    var csv = cols.join(',') + '\n' + rows.map(function (r) {
+      return cols.map(function (c) {
+        var v = r[c] == null ? '' : String(r[c]);
+        return '"' + v.replace(/"/g, '""') + '"';
+      }).join(',');
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'janet-registrations-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Janet Wambui Kimiti | Mama Sukari</title>
+<meta name="description" content="Register for free community programmes and skills training from Janet Wambui Kimiti, MCA candidate for Kahawa Sukari Ward.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F7F3E8;--ink:#0B0B0D;--green:#0C3B1E;--accent:#0E5C2B;--red:#C1272D;--mint:#7CFF9B;
+  --line:#E7E3D8;--muted:#6B6B6B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.5}
+img{max-width:100%;display:block}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+.spine{height:6px;background:linear-gradient(90deg,#0B0B0D 0%,var(--red) 50%,var(--accent) 100%)}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto}
+nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+nav .brand img{height:30px}
+nav .brand span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--green)}
+nav .navlinks{display:flex;align-items:center;gap:18px}
+nav a.navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);text-decoration:none;font-weight:600}
+
+/* Head */
+.pagehead{background:#fff;padding:46px 0 36px;border-bottom:1px solid var(--line);text-align:center}
+.section-kick{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:600}
+.pagehead h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,4vw,38px);color:var(--green);margin:10px 0 12px;line-height:1.12}
+.pagehead p{font-size:15px;color:#444;max-width:58ch;margin:0 auto}
+.pagehead .meta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.05em;background:var(--paper);border:1px solid var(--line);color:var(--green);padding:6px 13px;border-radius:20px}
+.chip.hot{background:#FCEBEC;border-color:#F3C9CB;color:var(--red)}
+
+/* Form */
+.formwrap{padding:34px 0 20px}
+.req-note{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin:0 0 14px}
+.req-note b{color:var(--red)}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:18px;box-shadow:0 12px 28px rgba(0,0,0,.05)}
+.card .bar{background:var(--green);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:10px}
+.card .bar .n{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--mint);font-weight:600}
+.card .bar h2{font-family:'Fraunces',serif;font-size:19px;font-weight:700;letter-spacing:.01em}
+.card .body{padding:22px}
+
+.field{margin-bottom:22px}
+.field:last-child{margin-bottom:0}
+label.lab{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:7px}
+label.lab .ast{color:var(--red);margin-left:2px}
+.hint{font-size:12.5px;color:var(--muted);margin:6px 0 0;line-height:1.45}
+input[type=text],input[type=tel],input[type=email],select,textarea{
+  width:100%;padding:12px 13px;border:1px solid #D9D5C9;border-radius:7px;background:#fff;
+  font-family:'Inter',sans-serif;font-size:15px;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+input.bad,select.bad,textarea.bad{border-color:var(--red);background:#FFF9F9}
+textarea{min-height:96px;resize:vertical}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--green) 50%),linear-gradient(135deg,var(--green) 50%,transparent 50%);
+  background-position:calc(100% - 19px) 50%,calc(100% - 14px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+.opt{display:flex;align-items:flex-start;gap:11px;padding:11px 13px;border:1px solid var(--line);border-radius:8px;margin-bottom:9px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover{border-color:#C9C4B4;background:#FCFBF6}
+.opt input{margin-top:3px;accent-color:var(--accent);width:17px;height:17px;flex:none;cursor:pointer}
+.opt .t{font-size:14.5px;font-weight:500}
+.opt .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+.opt.sel{border-color:var(--accent);background:#F3F8F4}
+.opts.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.opts.grid2 .opt{margin-bottom:0}
+
+.checkline{display:flex;align-items:flex-start;gap:11px;padding:12px 13px;border:1px solid var(--line);border-radius:8px;background:#FCFBF6}
+.checkline input{margin-top:3px;accent-color:var(--accent);width:17px;height:17px;flex:none;cursor:pointer}
+.checkline .t{font-size:13.5px;line-height:1.5}
+
+.err{display:none;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--red);margin-top:7px}
+.err.on{display:block}
+.banner{display:none;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:13px 16px;border-radius:8px;margin-bottom:16px;line-height:1.5}
+.banner.on{display:block}
+.banner.bad{background:#FCEBEC;color:#8E1F22;border:1px solid #F3C9CB}
+.banner.good{background:#E8F7EC;color:var(--accent);border:1px solid #CBE9D3}
+
+.submitbar{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 12px 28px rgba(0,0,0,.05)}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:15px 34px;border-radius:7px;border:none;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary[disabled]{opacity:.55;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--green);border:1.5px solid var(--green);padding:13px 22px}
+.submitbar .privacy{font-size:12.5px;color:var(--muted);flex:1;min-width:220px}
+
+/* Success */
+.success{display:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:52px 30px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.05)}
+.success.on{display:block}
+.success .tick{width:62px;height:62px;border-radius:50%;background:var(--accent);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.success h2{font-family:'Fraunces',serif;font-size:26px;color:var(--green);margin-bottom:10px}
+.success p{color:#444;font-size:15px;max-width:46ch;margin:0 auto 8px}
+.success .again{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.success .wp{font-family:'Fraunces',serif;font-size:20px;color:var(--green);margin-top:14px}
+
+.fallback{text-align:center;padding:26px 0 60px}
+.fallback p{color:#555;font-size:14px}
+.fallback .phone{font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--green);margin-top:6px}
+.loading{text-align:center;padding:56px 0;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted)}
+
+footer{background:var(--ink);color:#999;padding:34px 0;text-align:center;margin-top:20px}
+footer .foot-brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#fff;margin-bottom:8px}
+footer p{font-size:11px;color:#666}
+footer a{color:#8FB79B}
+
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+@media (max-width:640px){
+  .opts.grid2{grid-template-columns:1fr}
+  .submitbar{flex-direction:column;align-items:stretch}
+  .submitbar .btn{width:100%;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="spine"></div>
+<nav>
+  <a class="brand" href="index.html"><img src="images/DCP%20LOGO.png" alt="DCP — Democratic Congress Party" onerror="this.style.display='none'"><span>MAMA SUKARI</span></a>
+  <div class="navlinks">
+    <a class="navlink" href="events.html">← All Programmes</a>
+  </div>
+</nav>
+
+<section class="pagehead">
+  <div class="wrap">
+    <div class="section-kick" id="ev-kick">REGISTER</div>
+    <h1 id="ev-title">Loading…</h1>
+    <p id="ev-sub"></p>
+    <div class="meta" id="ev-meta"></div>
+  </div>
+</section>
+
+<section class="formwrap">
+  <div class="wrap">
+    <div class="loading" id="loading">Loading form…</div>
+
+    <div id="form-area" style="display:none">
+      <div class="banner" id="banner"></div>
+      <p class="req-note">Fields marked <b>*</b> are required.</p>
+
+      <form id="reg-form" novalidate>
+        <!-- 1 · Your details -->
+        <div class="card">
+          <div class="bar"><span class="n">01</span><h2>Your details</h2></div>
+          <div class="body">
+            <div class="field">
+              <label class="lab" for="full_name">Full name<span class="ast">*</span></label>
+              <input id="full_name" name="full_name" type="text" autocomplete="name" placeholder="e.g. Grace Wanjiru Kamau" required>
+              <div class="err" id="err-full_name">Please enter your full name.</div>
+            </div>
+
+            <div class="field">
+              <label class="lab" for="phone">Phone number<span class="ast">*</span></label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXX" required>
+              <p class="hint">We call or WhatsApp this number to confirm your place.</p>
+              <div class="err" id="err-phone">Enter a valid Kenyan number, e.g. 0712 345 678.</div>
+            </div>
+
+            <div class="field">
+              <div class="checkline">
+                <input type="checkbox" id="wa-same" checked>
+                <label class="t" for="wa-same">My WhatsApp is the same number</label>
+              </div>
+              <div id="wa-wrap" style="display:none;margin-top:10px">
+                <label class="lab" for="whatsapp">WhatsApp number</label>
+                <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" placeholder="07XX XXX XXX">
+                <div class="err" id="err-whatsapp">Enter a valid WhatsApp number.</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="lab" for="estate">Estate / village in Kahawa Sukari</label>
+              <input id="estate" name="estate" type="text" placeholder="e.g. Sukari Estate, Jua Kali, Kahawa Wendani">
+              <p class="hint">Optional — it helps us plan class groups near you.</p>
+            </div>
+
+            <div class="field">
+              <label class="lab">Age group</label>
+              <div class="opts grid2" id="age-opts">
+                <label class="opt"><input type="radio" name="age_group" value="18–24"><span class="t">18–24</span></label>
+                <label class="opt"><input type="radio" name="age_group" value="25–34"><span class="t">25–34</span></label>
+                <label class="opt"><input type="radio" name="age_group" value="35–44"><span class="t">35–44</span></label>
+                <label class="opt"><input type="radio" name="age_group" value="45+"><span class="t">45 and above</span></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="lab">I am registering as<span class="ast">*</span></label>
+              <div class="opts" id="type-opts">
+                <label class="opt"><input type="radio" name="applicant_type" value="Youth" required><span><span class="t">A young person (18–34)</span></span></label>
+                <label class="opt"><input type="radio" name="applicant_type" value="Young mother"><span><span class="t">A young mother</span></span></label>
+                <label class="opt"><input type="radio" name="applicant_type" value="Resident"><span><span class="t">A resident of Kahawa Sukari Ward</span></span></label>
+                <label class="opt"><input type="radio" name="applicant_type" value="Other"><span><span class="t">Other — I'll explain in the notes</span></span></label>
+              </div>
+              <div class="err" id="err-applicant_type">Please choose one.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 · Course -->
+        <div class="card">
+          <div class="bar"><span class="n">02</span><h2>Choose your course</h2></div>
+          <div class="body">
+            <div class="field">
+              <label class="lab">First choice<span class="ast">*</span></label>
+              <div class="opts" id="course-opts"></div>
+              <div class="err" id="err-primary_course">Please choose a course.</div>
+            </div>
+            <div class="field">
+              <label class="lab" for="second_course">Second choice (optional)</label>
+              <select id="second_course" name="second_course">
+                <option value="">No second choice</option>
+              </select>
+              <p class="hint">Classes fill fast — a second choice helps us place you.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 · Finish -->
+        <div class="card">
+          <div class="bar"><span class="n">03</span><h2>Before you submit</h2></div>
+          <div class="body">
+            <div class="field">
+              <label class="lab" for="notes">Anything we should know?</label>
+              <textarea id="notes" name="notes" placeholder="Optional — e.g. best time to call, or a question about the programme"></textarea>
+            </div>
+            <div class="field">
+              <div class="checkline">
+                <input type="checkbox" id="consent" required>
+                <label class="t" for="consent">I confirm my details are correct and I agree to be contacted by Janet Kimiti's campaign team about this programme.<span class="ast" style="color:var(--red)">*</span></label>
+              </div>
+              <div class="err" id="err-consent">Please tick this box so we can contact you.</div>
+            </div>
+            <!-- spam honeypot -->
+            <div class="hp"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+          </div>
+        </div>
+
+        <div class="submitbar">
+          <button class="btn btn-primary" id="submit-btn" type="submit">Submit</button>
+          <button class="btn btn-ghost" id="clear-btn" type="button">Clear form</button>
+          <p class="privacy">Your details are stored securely and used only to place you in a programme. We never sell or share them.</p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Success -->
+    <div class="success" id="success" role="status" aria-live="polite">
+      <div class="tick">✓</div>
+      <h2>Your response has been recorded.</h2>
+      <p id="success-line">Thank you — your registration has reached the campaign team.</p>
+      <p>We will call or WhatsApp you on the number you gave us to confirm your place.</p>
+      <div class="wp">Call / WhatsApp: 0708 276 788</div>
+      <div class="again">
+        <a class="btn btn-primary" href="events.html">See other programmes</a>
+        <button class="btn btn-ghost" id="again-btn" type="button">Submit another response</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fallback">
+  <div class="wrap">
+    <p>Prefer to register by phone, or something isn't loading?</p>
+    <div class="phone">Call / WhatsApp: 0708 276 788</div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">LISTEN • ACT • DELIVER</div>
+  <p>Janet Wambui Kimiti for MCA, Kahawa Sukari Ward 0572 • Democratic Congress Party (DCP)<br>[Placeholder — add authorized-by / IEBC disclaimer line here per campaign finance rules]</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // Used when the database has no event yet, so the page is never blank.
+  var FALLBACK_EVENT = {
+    slug: 'new-dawn',
+    title: 'A New Dawn: Free Skills Training',
+    tag_line: '100% Fully Sponsored — October Intake',
+    description: 'Kazi sio CV peke yake, ni SKILL! Fully sponsored short courses for youths, young mothers and residents of Kahawa Sukari Ward. Learn. Create. Earn.',
+    event_date: '2026-10-05',
+    location: 'Kahawa Sukari Ward',
+    courses: ['☕ Coffee Barista', '🍽️ Hospitality', '🧁 Baking & Pastry', '🥗 Nutrition']
+  };
+
+  var PHONE_RE = /^(?:\+?254|0)(?:7|1)\d{8}$/;
+
+  var els = {
+    kick: document.getElementById('ev-kick'),
+    title: document.getElementById('ev-title'),
+    sub: document.getElementById('ev-sub'),
+    meta: document.getElementById('ev-meta'),
+    loading: document.getElementById('loading'),
+    area: document.getElementById('form-area'),
+    banner: document.getElementById('banner'),
+    form: document.getElementById('reg-form'),
+    courseOpts: document.getElementById('course-opts'),
+    second: document.getElementById('second_course'),
+    submit: document.getElementById('submit-btn'),
+    success: document.getElementById('success'),
+    successLine: document.getElementById('success-line'),
+    again: document.getElementById('again-btn')
+  };
+
+  var state = { event: null, client: null, sending: false };
+
+  function hasSupabase() {
+    return typeof window.supabase !== 'undefined' && typeof SUPABASE_URL === 'string' && SUPABASE_URL.indexOf('http') === 0;
+  }
+  function showBanner(kind, text) {
+    els.banner.className = 'banner on ' + kind;
+    els.banner.textContent = text;
+  }
+  function clearBanner() { els.banner.className = 'banner'; els.banner.textContent = ''; }
+  function setErr(id, on) {
+    var e = document.getElementById('err-' + id);
+    if (e) e.className = 'err' + (on ? ' on' : '');
+    var f = document.getElementById(id);
+    if (f && (f.tagName === 'INPUT' || f.tagName === 'SELECT' || f.tagName === 'TEXTAREA')) {
+      f.className = on ? 'bad' : '';
+    }
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmtDate(d) {
+    if (!d) return '';
+    var dt = new Date(d + 'T00:00:00');
+    if (isNaN(dt)) return d;
+    return dt.toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  function renderEvent(ev) {
+    state.event = ev;
+    els.kick.textContent = ev.tag_line ? ev.tag_line : 'REGISTER';
+    els.title.textContent = ev.title ? 'Register: ' + ev.title : 'Register';
+    els.sub.textContent = ev.description || '';
+    document.title = 'Register — ' + (ev.title || 'Programmes') + ' | Janet Wambui Kimiti';
+
+    var chips = [];
+    if (ev.event_date) chips.push('<span class="chip">📅 ' + esc(fmtDate(ev.event_date)) + '</span>');
+    if (ev.location) chips.push('<span class="chip">📍 ' + esc(ev.location) + '</span>');
+    chips.push('<span class="chip hot">Nafasi ni chache — register early</span>');
+    els.meta.innerHTML = chips.join('');
+
+    var courses = (ev.courses && ev.courses.length) ? ev.courses : FALLBACK_EVENT.courses;
+    els.courseOpts.innerHTML = courses.map(function (c, i) {
+      return '<label class="opt"><input type="radio" name="primary_course" value="' + esc(c) + '" required>' +
+             '<span class="t">' + esc(c) + '</span></label>';
+    }).join('');
+    els.second.innerHTML = '<option value="">No second choice</option>' +
+      courses.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + '</option>'; }).join('');
+
+    els.loading.style.display = 'none';
+    els.area.style.display = 'block';
+  }
+
+  function accentSelects() {
+    // toggle .sel on option rows for visual feedback
+    document.querySelectorAll('.opt input').forEach(function (input) {
+      input.addEventListener('change', function () {
+        var name = input.getAttribute('name');
+        document.querySelectorAll('.opt input[name="' + name + '"]').forEach(function (peer) {
+          peer.closest('.opt').classList.toggle('sel', peer.checked);
+        });
+      });
+    });
+  }
+
+  function wireToggles() {
+    var same = document.getElementById('wa-same');
+    var wrap = document.getElementById('wa-wrap');
+    same.addEventListener('change', function () {
+      wrap.style.display = same.checked ? 'none' : 'block';
+    });
+    document.getElementById('clear-btn').addEventListener('click', function () {
+      els.form.reset();
+      document.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('sel'); });
+      document.querySelectorAll('.err').forEach(function (e) { e.className = 'err'; });
+      document.querySelectorAll('.bad').forEach(function (e) { e.className = ''; });
+      wrap.style.display = 'none';
+      clearBanner();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    els.again.addEventListener('click', function () {
+      els.success.className = 'success';
+      els.area.style.display = 'block';
+      els.form.reset();
+      document.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('sel'); });
+      document.getElementById('wa-wrap').style.display = 'none';
+      clearBanner();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  function validate() {
+    var ok = true;
+    var name = document.getElementById('full_name').value.trim();
+    var phone = document.getElementById('phone').value.replace(/[\s\-()]/g, '');
+    var waSame = document.getElementById('wa-same').checked;
+    var wa = document.getElementById('whatsapp').value.replace(/[\s\-()]/g, '');
+    var type = els.form.querySelector('input[name="applicant_type"]:checked');
+    var course = els.form.querySelector('input[name="primary_course"]:checked');
+    var consent = document.getElementById('consent').checked;
+
+    setErr('full_name', !(name.length >= 3));
+    if (!(name.length >= 3)) ok = false;
+
+    setErr('phone', !PHONE_RE.test(phone));
+    if (!PHONE_RE.test(phone)) ok = false;
+
+    var waBad = !waSame && wa.length > 0 && !PHONE_RE.test(wa);
+    setErr('whatsapp', waBad);
+    if (waBad) ok = false;
+
+    setErr('applicant_type', !type);
+    if (!type) ok = false;
+
+    var courseErr = document.getElementById('err-primary_course');
+    courseErr.className = 'err' + (course ? '' : ' on');
+    if (!course) ok = false;
+
+    setErr('consent', !consent);
+    if (!consent) ok = false;
+
+    return ok;
+  }
+
+  function collect() {
+    var waSame = document.getElementById('wa-same').checked;
+    var phone = document.getElementById('phone').value.trim();
+    var type = els.form.querySelector('input[name="applicant_type"]:checked');
+    var course = els.form.querySelector('input[name="primary_course"]:checked');
+    var age = els.form.querySelector('input[name="age_group"]:checked');
+    return {
+      event_slug: state.event.slug || 'new-dawn',
+      event_title: state.event.title || null,
+      full_name: document.getElementById('full_name').value.trim(),
+      phone: phone,
+      whatsapp: waSame ? phone : (document.getElementById('whatsapp').value.trim() || null),
+      estate: document.getElementById('estate').value.trim() || null,
+      age_group: age ? age.value : null,
+      applicant_type: type ? type.value : null,
+      primary_course: course ? course.value : null,
+      second_course: document.getElementById('second_course').value || null,
+      notes: document.getElementById('notes').value.trim() || null,
+      consent: true,
+      source: 'website'
+    };
+  }
+
+  async function submit(e) {
+    e.preventDefault();
+    if (state.sending) return;
+    clearBanner();
+
+    // honeypot
+    if (document.getElementById('company').value) { return; }
+
+    if (!validate()) {
+      showBanner('bad', 'Please fix the highlighted fields and submit again.');
+      var firstBad = els.form.querySelector('.bad, .err.on');
+      if (firstBad) firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (!state.client) {
+      showBanner('bad', 'We could not reach the registration service. Please call or WhatsApp 0708 276 788 and we will register you directly.');
+      return;
+    }
+
+    state.sending = true;
+    els.submit.disabled = true;
+    els.submit.textContent = 'Submitting…';
+
+    try {
+      var payload = collect();
+      var res = await state.client.from('janet_registrations').insert(payload);
+      if (res.error) throw res.error;
+
+      els.area.style.display = 'none';
+      els.successLine.textContent = 'Thank you ' + payload.full_name.split(' ')[0] + ' — your registration for ' +
+        (state.event.title || 'this programme') + ' has reached the campaign team.';
+      els.success.className = 'success on';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      console.error(err);
+      showBanner('bad', 'Something went wrong while submitting (' + (err && err.message ? err.message : 'network') +
+        '). Please try again, or call/WhatsApp 0708 276 788 to register directly.');
+    } finally {
+      state.sending = false;
+      els.submit.disabled = false;
+      els.submit.textContent = 'Submit';
+    }
+  }
+
+  async function init() {
+    wireToggles();
+    accentSelects();
+    els.form.addEventListener('submit', submit);
+
+    var slug = new URLSearchParams(window.location.search).get('event');
+
+    try {
+      if (hasSupabase()) {
+        state.client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        var q = state.client.from('janet_events').select('slug,title,tag_line,description,event_date,location,courses').eq('is_active', true);
+        q = slug ? q.eq('slug', slug) : q.order('event_date', { ascending: true }).limit(1);
+        var out = await q;
+        if (out.error) throw out.error;
+        var ev = (out.data && out.data.length) ? out.data[0] : null;
+        renderEvent(ev || FALLBACK_EVENT);
+      } else {
+        renderEvent(FALLBACK_EVENT);
+      }
+    } catch (err) {
+      console.error(err);
+      renderEvent(FALLBACK_EVENT);
+      showBanner('bad', 'We could not load this programme from the server, so you are seeing our main intake. Your registration will still reach the team.');
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

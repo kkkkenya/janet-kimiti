@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events &amp; Programs — Janet Wambui Kimiti | Mama Sukari</title>
+<meta name="description" content="Upcoming community programs and events from Janet Wambui Kimiti's campaign, Kahawa Sukari Ward.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F7F3E8;--ink:#0B0B0D;--green:#0C3B1E;--accent:#0E5C2B;--red:#C1272D;--mint:#7CFF9B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.5}
+img{max-width:100%;display:block}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.spine{height:6px;background:linear-gradient(90deg,#0B0B0D 0%,var(--red) 50%,var(--accent) 100%)}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1040px;margin:0 auto}
+nav .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+nav .brand img{height:30px}
+nav .brand span{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--green)}
+nav .navlinks{display:flex;align-items:center;gap:18px}
+nav a.navlink{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);text-decoration:none;font-weight:600}
+nav a.cta{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 16px;text-decoration:none;font-weight:600}
+
+.pagehead{background:#fff;padding:50px 0 40px;border-bottom:1px solid #eee}
+.section-kick{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:600}
+.pagehead h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(30px,4.4vw,44px);color:var(--green);margin:10px 0 12px}
+.pagehead p{font-size:16px;color:#333;max-width:60ch}
+
+.events{padding:50px 0 80px}
+.event-card{background:#fff;border:1px solid #eee;border-radius:8px;padding:32px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.event-tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:8px}
+.event-card h2{font-family:'Fraunces',serif;font-weight:700;font-size:26px;color:var(--green);margin:0 0 10px}
+.event-card p{font-size:15px;color:#444;max-width:56ch;margin-bottom:10px}
+.event-meta{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#666;letter-spacing:.03em}
+.event-courses{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;background:var(--paper);border:1px solid #ddd;color:var(--green);padding:5px 12px;border-radius:20px}
+.btn{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 26px;text-decoration:none;font-weight:600;cursor:pointer;border:none;white-space:nowrap;display:inline-block}
+.btn-primary{background:var(--red);color:#fff}
+
+.state{padding:20px 0;color:#777;font-size:14px;font-family:'IBM Plex Mono',monospace}
+.more{padding:0 0 70px;text-align:center}
+.more p{color:#777;font-size:14px;max-width:50ch;margin:0 auto}
+
+footer{background:var(--ink);color:#999;padding:34px 0;text-align:center}
+footer .foot-brand{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#fff;margin-bottom:8px}
+footer p{font-size:11px;color:#666}
+
+@media (max-width:700px){
+  .event-card{grid-template-columns:1fr}
+  .btn{width:100%;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="spine"></div>
+<nav>
+  <a class="brand" href="index.html"><img src="images/DCP%20LOGO.png" alt="DCP" onerror="this.style.display='none'"><span>MAMA SUKARI</span></a>
+  <div class="navlinks">
+    <a class="navlink" href="index.html#contract">The Contract</a>
+    <a class="cta" href="index.html#support">Support</a>
+  </div>
+</nav>
+
+<section class="pagehead">
+  <div class="wrap">
+    <div class="section-kick">EVENTS &amp; PROGRAMS</div>
+    <h1>Skills today. Opportunities tomorrow.</h1>
+    <p>Fully sponsored short courses and community programs for Kahawa Sukari Ward — open to youths, young mothers, and residents. Register below to reserve your spot.</p>
+  </div>
+</section>
+
+<section class="events">
+  <div class="wrap" id="events-wrap">
+    <div class="state">Loading events…</div>
+  </div>
+</section>
+
+<section class="more">
+  <div class="wrap">
+    <p>More community programs and events will be added here as they're announced. Questions? Call or WhatsApp <strong>0708 276 788</strong>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-brand">LISTEN • ACT • DELIVER</div>
+  <p>Janet Wambui Kimiti for MCA, Kahawa Sukari Ward 0572 • Democratic Congress Party (DCP)<br>[Placeholder — add authorized-by / IEBC disclaimer line here per campaign finance rules]</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+(async function () {
+  const wrap = document.getElementById('events-wrap');
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const { data, error } = await client
+    .from('janet_events')
+    .select('*')
+    .eq('is_active', true)
+    .order('event_date', { ascending: true });
+
+  if (error) {
+    wrap.innerHTML = '<div class="state">Couldn\u2019t load events right now. Call/WhatsApp 0708 276 788 to register directly.</div>';
+    console.error(error);
+    return;
+  }
+  if (!data || data.length === 0) {
+    wrap.innerHTML = '<div class="state">No events open right now — check back soon.</div>';
+    return;
+  }
+
+  wrap.innerHTML = data.map(function (ev) {
+    const dateStr = ev.event_date
+      ? new Date(ev.event_date + 'T00:00:00').toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' })
+      : '';
+    const courses = (ev.courses || []).map(function (c) {
+      return '<span class="pill">' + c + '</span>';
+    }).join('');
+    return (
+      '<div class="event-card">' +
+        '<div>' +
+          (ev.tag_line ? '<div class="event-tag">' + ev.tag_line + '</div>' : '') +
+          '<h2>' + ev.title + '</h2>' +
+          (ev.description ? '<p>' + ev.description + '</p>' : '') +
+          '<div class="event-meta">' +
+            (dateStr ? '📅 ' + dateStr : '') +
+            (ev.location ? ' &nbsp;·&nbsp; 📍 ' + ev.location : '') +
+          '</div>' +
+          (courses ? '<div class="event-courses">' + courses + '</div>' : '') +
+        '</div>' +
+        '<a class="btn btn-primary" href="register.html?event=' + encodeURIComponent(ev.slug) + '">Register Now</a>' +
+      '</div>'
+    );
+  }).join('');
+})();
+</script>
+</body>
+</html>
